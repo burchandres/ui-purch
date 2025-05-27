@@ -41,18 +41,9 @@ export const actions: Actions = {
 			return fail(400, { message: response.error });
 		}
 
-		const loginResponse = await api.auth.login(username, password);
-		if (loginResponse.error) {
-			return fail(400, { message: loginResponse.error });
-		}
-
-		const token = auth.createUserSession(
-			response.data!.id,
-			response.data!.username,
-			loginResponse.data!.access_token
-		);
-
-		auth.setAuthCookie(event, token);
-		return redirect(302, '/dashboard');
+		return {
+			success: true,
+			message: 'User successfully created. Please log in'
+		};
 	}
 };

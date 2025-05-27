@@ -1,78 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: hsl(var(--foreground));
+		transition: background-color 5000s ease-in-out 0s;
+		box-shadow: inset 0 0 20px 20px transparent;
+	}
 	:root {
 		--background: 0 0% 100%;
 		--foreground: 224 71.4% 4.1%;
-
 		--muted: 220 14.3% 95.9%;
 		--muted-foreground: 220 8.9% 46.1%;
-
 		--popover: 0 0% 100%;
 		--popover-foreground: 224 71.4% 4.1%;
-
 		--card: 0 0% 100%;
 		--card-foreground: 224 71.4% 4.1%;
-
 		--border: 220 13% 91%;
 		--input: 220 13% 91%;
-
-		--primary: 220.9 39.3% 11%;
-		--primary-foreground: 210 20% 98%;
-
-		--secondary: 220 14.3% 95.9%;
-		--secondary-foreground: 220.9 39.3% 11%;
-
-		--accent: 220 14.3% 95.9%;
-		--accent-foreground: 220.9 39.3% 11%;
-
+		--primary: 345 82% 40%;
+		--primary-foreground: 0 0% 100%;
+		--primary-darker: 345 82% 35%;
 		--destructive: 0 72.2% 50.6%;
 		--destructive-foreground: 210 20% 98%;
-
+		--destructive-darker: 0 72.2% 45.6%;
+		--secondary: 220 14.3% 95.9%;
+		--secondary-foreground: 220.9 39.3% 11%;
+		--accent: 345 82% 35%;
+		--accent-foreground: 0 0% 100%;
+		--destructive: 0 72.2% 50.6%;
+		--destructive-foreground: 210 20% 98%;
 		--ring: 224 71.4% 4.1%;
-
 		--radius: 0.5rem;
 	}
 
 	.dark {
 		--background: 224 71.4% 4.1%;
 		--foreground: 210 20% 98%;
-
 		--muted: 215 27.9% 16.9%;
 		--muted-foreground: 217.9 10.6% 64.9%;
-
 		--popover: 224 71.4% 4.1%;
 		--popover-foreground: 210 20% 98%;
-
 		--card: 224 71.4% 4.1%;
 		--card-foreground: 210 20% 98%;
-
 		--border: 215 27.9% 16.9%;
 		--input: 215 27.9% 16.9%;
-
-		--primary: 210 20% 98%;
-		--primary-foreground: 220.9 39.3% 11%;
-
+		--primary: 345 82% 40%;
+		--primary-foreground: 0 0% 100%;
+		--primary-darker: 345 82% 35%;
+		--destructive: 0 72.2% 50.6%;
+		--destructive-foreground: 210 20% 98%;
+		--destructive-darker: 0 72.2% 45.6%;
 		--secondary: 215 27.9% 16.9%;
 		--secondary-foreground: 210 20% 98%;
-
-		--accent: 215 27.9% 16.9%;
-		--accent-foreground: 210 20% 98%;
-
+		--accent: 345 82% 35%;
+		--accent-foreground: 0 0% 100%;
 		--destructive: 0 62.8% 30.6%;
 		--destructive-foreground: 210 20% 98%;
-
 		--ring: 216 12.2% 83.9%;
 	}
 }
 
 @layer base {
 	* {
-		@reference border-border;
+		@apply border-zinc-200 dark:border-zinc-800;
 	}
 	body {
-		@reference bg-background text-foreground;
+		background-color: hsl(var(--background));
+		color: hsl(var(--foreground));
 	}
 }

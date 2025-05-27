@@ -1,31 +1,14 @@
-import * as auth from '$lib/auth';
-import { fail, redirect } from '@sveltejs/kit';
-import { getRequestEvent } from '$app/server';
-import type { Actions, PageServerLoad } from './login/$types';
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
-	const user = requireLogin();
-	return { user };
-};
-
-export const actions: Actions = {
-	logout: async (event) => {
-		if (!event.locals.session) {
-			return fail(401);
-		}
-		await auth.invalidateSession(event.locals.session.id);
-		// auth.deleteSessionTokenCookie(event);
-
-		return redirect(302, '/login');
-	}
-};
-
-function requireLogin() {
-	const { locals } = getRequestEvent();
-
-	if (!locals.user) {
-		return redirect(302, '/login');
+export const load: PageServerLoad = async ({ locals }) => {
+	// if user is logged in (has valid session), redirect to dashboard
+	if (locals.user) {
+		throw redirect(302, '/dashboard');
 	}
 
-	return locals.user;
-}
+	// TODO: landing page instead?
+
+	// otherwise redirect to login
+	throw redirect(302, '/login');
+};
