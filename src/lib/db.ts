@@ -13,7 +13,6 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS auth_tokens (
     token TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
-    access_token TEXT NOT NULL,
     expires_at INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id)
   );

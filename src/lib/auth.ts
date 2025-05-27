@@ -13,6 +13,7 @@ type UserSession = {
 
 export function createUserSession(userId: string, username: string, accessToken: string): string {
 	// Store user if not exists
+
 	db.prepare(
 		`
     INSERT OR IGNORE INTO users (id, username)
@@ -21,7 +22,6 @@ export function createUserSession(userId: string, username: string, accessToken:
 	).run(userId, username);
 
 	// Create new token
-	const token = accessToken;
 	const expiresAt = Date.now() + 30 * 60 * 1000; // 30m
 
 	db.prepare(
@@ -29,9 +29,9 @@ export function createUserSession(userId: string, username: string, accessToken:
     INSERT INTO auth_tokens (token, user_id, expires_at)
     VALUES (?, ?, ?)
   `
-	).run(token, userId, expiresAt);
+	).run(accessToken, userId, expiresAt);
 
-	return token;
+	return accessToken;
 }
 
 export function validateSession(token: string): UserSession | null {

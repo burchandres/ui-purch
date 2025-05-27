@@ -3,7 +3,6 @@ import * as auth from '$lib/auth';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	console.log('dashboard locals: ', locals);
 	if (!locals.user) {
 		throw redirect(302, '/login');
 	}
