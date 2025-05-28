@@ -5,6 +5,12 @@ type ApiResponse<T> = {
 	error?: string;
 };
 
+type LoginResponse = {
+	access_token: string;
+	token_type: string;
+	expiration: string;
+};
+
 async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
 	try {
 		const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -35,7 +41,7 @@ export const api = {
 			formData.append('username', username);
 			formData.append('password', password);
 
-			return apiCall<{ access_token: string; token_type: string }>('/auth/token', {
+			return apiCall<LoginResponse>('/auth/token', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
@@ -59,16 +65,6 @@ export const api = {
 			return apiCall<{ id: string; username: string }>('/auth/register', {
 				method: 'POST',
 				body: JSON.stringify({ username, password, ...fields })
-			});
-		}
-	},
-
-	user: {
-		current: async (token: string) => {
-			return apiCall<{ id: string; username: string }>('/user/current', {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
 			});
 		}
 	}

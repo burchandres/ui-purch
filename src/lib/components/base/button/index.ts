@@ -1,6 +1,4 @@
-import { tv } from 'tailwind-variants';
-
-export type ButtonVariants = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 export const buttonVariants = tv({
 	base: 'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -10,7 +8,7 @@ export const buttonVariants = tv({
 				'bg-[hsl(var(--primary))]',
 				'text-[hsl(var(--primary-foreground))]',
 				'border border-[hsl(345,82%,35%)]',
-				'shadow-[0_4px_6px_-1px_rgb(0,0,0,0.1),0_2px_4px_-2px_rgb(0,0,0,0.1)]', // More pronounced shadow
+				'shadow-[0_4px_6px_-1px_rgb(0,0,0,0.1),0_2px_4px_-2px_rgb(0,0,0,0.1)]',
 				'hover:bg-[hsl(345,82%,35%)]',
 				'transition-all duration-200'
 			],
@@ -51,3 +49,5 @@ export const buttonVariants = tv({
 		size: 'default'
 	}
 });
+
+export type ButtonVariants = VariantProps<typeof buttonVariants>;
