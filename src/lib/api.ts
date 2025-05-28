@@ -8,7 +8,7 @@ type ApiResponse<T> = {
 type LoginResponse = {
 	access_token: string;
 	token_type: string;
-	expiration: string;
+	expiration: number;
 };
 
 async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {

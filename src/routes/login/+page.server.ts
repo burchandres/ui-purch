@@ -11,8 +11,8 @@ export const actions: Actions = {
 			data.get('password') as string
 		);
 
-		if (result?.error) {
-			return fail(400, { message: result.error });
+		if (!result.success) {
+			return fail(400, { message: result.message });
 		}
 	},
 
@@ -23,8 +23,8 @@ export const actions: Actions = {
 			data.get('password') as string
 		);
 
-		if (result?.error) {
-			return fail(400, { message: result.error });
+		if (!result.success) {
+			return fail(400, { message: result.message });
 		}
 
 		return result;

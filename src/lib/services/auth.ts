@@ -49,14 +49,17 @@ export const authService = {
 		const response = await api.auth.login(username, password);
 
 		if (response.error) {
-			return { error: response.error };
+			return { success: false, message: response.error };
 		}
 
 		this.setPurchTokenCookie(event, response.data!.access_token, response.data!.expiration);
 		throw redirect(302, '/dashboard');
 	},
 
-	async register(username: string, password: string): { success: boolean; message: string } {
+	async register(
+		username: string,
+		password: string
+	): Promise<{ success: boolean; message: string }> {
 		const response = await api.auth.register(username, password);
 		if (response.error) {
 			return { success: false, message: response.error };

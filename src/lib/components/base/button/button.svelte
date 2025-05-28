@@ -3,7 +3,10 @@
 	import { cn } from '$lib/utils.js';
 	import { buttonVariants, type ButtonVariants } from './index.js';
 
-	type $$Props = HTMLButtonAttributes & ButtonVariants;
+	type $$Props = HTMLButtonAttributes &
+		ButtonVariants & {
+			formAction?: string; // Add this line
+		};
 
 	let className: $$Props['class'] = undefined;
 	export let variant: $$Props['variant'] = 'default';

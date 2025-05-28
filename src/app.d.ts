@@ -1,7 +1,7 @@
 declare global {
 	namespace App {
 		interface Locals {
-			accessToken: {
+			purchToken: {
 				token: string;
 				expiration: number;
 			} | null;
