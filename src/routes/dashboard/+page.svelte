@@ -3,10 +3,9 @@
 	import Button from '$lib/components/base/button/button.svelte';
 	import { FormCard } from '$lib/components/form-card';
 	import { Table, TableBody, TableCell, TableRow } from '$lib/components/base/table';
-	import { EXPIRATION_DUR } from '$lib/services/auth';
 
 	let { data } = $props<{ data: PageData }>();
-	let timeRemaining = $state(`${getTimeString(EXPIRATION_DUR)}`);
+	let timeRemaining = $state(`${getTimeString(data.purchToken.expiration - Date.now())}`);
 	let logoutForm: HTMLFormElement;
 
 	function getTimeString(remaining: number): string {
@@ -16,7 +15,7 @@
 	// update time remaining every second
 	$effect(() => {
 		const timer = setInterval(() => {
-			const remaining = data.accessToken.expiration - Date.now();
+			const remaining = data.purchToken.expiration - Date.now();
 			if (remaining <= 0) {
 				timeRemaining = 'Expired';
 				// force a reload
@@ -34,7 +33,7 @@
 			<TableBody>
 				<TableRow>
 					<TableCell class="font-medium">Access token</TableCell>
-					<TableCell class="font-mono break-all">{data.accessToken.token}</TableCell>
+					<TableCell class="font-mono break-all">{data.purchToken.token}</TableCell>
 				</TableRow>
 				<TableRow>
 					<TableCell class="font-medium">Time remaining</TableCell>

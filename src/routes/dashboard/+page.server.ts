@@ -3,7 +3,7 @@ import { authService } from '$lib/services/auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const token = authService.requirePurchAuth(locals);
-	return { accessToken: token };
+	return { purchToken: token };
 };
 
 export const actions: Actions = {
