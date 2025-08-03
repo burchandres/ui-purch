@@ -1,7 +1,8 @@
 import axios from "axios";
+import { apiConfig } from "@/config/api";
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
+  baseURL: apiConfig.purchBaseUrl,
   withCredentials: true,
 });
 
@@ -9,9 +10,7 @@ export const api = axios.create({
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
-      // maybe redirect to login here ?
-    }
+    if (err.response?.status === 401) return false;
     return Promise.reject(err);
   },
 );
