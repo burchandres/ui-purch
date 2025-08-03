@@ -10,7 +10,7 @@ import {
 import { PanelLeftClose } from "lucide-react";
 import { PurchLogoSquare } from "@/components/icons/purch-logo";
 import { Link } from "@tanstack/react-router";
-import { pages } from "@/config/pages";
+import { pagesConfig } from "@/config/pages";
 import { useSidebar } from "@/components/base/sidebar";
 import { Button } from "@/components/base/button";
 
@@ -53,7 +53,7 @@ export function NavBar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {pages.map((page) => (
+            {pagesConfig.pages.map((page) => (
               <Link key={page.url} to={page.url} className="navbar-item">
                 <SidebarMenuButton tooltip={!openOrMobile ? page.display : ""}>
                   {page.icon && <page.icon />}
