@@ -4,16 +4,9 @@ import { LandingPage } from "@/components/landing/landing-page";
 
 // routes to dashboard if logged in, login if not
 export const Route = createFileRoute("/")({
-  component: () => (
-    <>
-      <LandingPage />
-      <Outlet />
-    </>
-  ),
+  component: () => <LandingPage />,
   loader: async () => {
-    console.log("ok!!");
     const user = await getCurrentUser();
-    console.log("user", user);
     if (user) throw redirect({ to: "/app/dashboard" });
   },
 });

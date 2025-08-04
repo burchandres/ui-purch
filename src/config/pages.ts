@@ -1,5 +1,4 @@
 import { House, Settings } from "lucide-react";
-import { PurchLogoSquare } from "@/components/icons/purch-logo";
 
 export type PageConfig = {
   url: string;
