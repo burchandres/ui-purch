@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { PurchLogoText } from "@/components/icons/purch-logo";
-import { CreateUserCard } from "./create-user-card";
-import { LoginCard } from "./login-card";
+import { LoginCard } from "./user-forms/login";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../base/tabs";
 import { Button } from "../base/button";
+import { FormCard } from "./user-forms/shared-form";
+import { CreateAccountCard } from "./user-forms/create-account";
 
 const Header = () => (
-  <div className="sticky top-0 p-6">
+  <div className="sticky top-0 p-6 z-100">
     <Link to="/">
       <PurchLogoText />
     </Link>
@@ -31,7 +32,7 @@ const tabs = [
   {
     id: "create",
     display: "Create Account",
-    component: CreateUserCard,
+    component: CreateAccountCard,
   },
   {
     id: "login",
@@ -52,13 +53,15 @@ export const LandingPage = () => {
           <div className="mb-2">
             <TabsList>
               {tabs.map((tab) => (
-                <TabsTrigger value={tab.id}>{tab.display}</TabsTrigger>
+                <TabsTrigger key={tab.id} value={tab.id}>
+                  {tab.display}
+                </TabsTrigger>
               ))}
             </TabsList>
           </div>
           <div className="min-w-sm p-0">
             {tabs.map((tab) => (
-              <TabsContent value={tab.id}>
+              <TabsContent key={tab.id} value={tab.id}>
                 <tab.component />
               </TabsContent>
             ))}
