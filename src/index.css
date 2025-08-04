@@ -20,11 +20,14 @@
     --slate-800: oklch(0.3498 0.0599 206.56);
     --slate-900: oklch(0.2541 0.0443 212.19);
 
+    --lighter-transparent: oklch(1 0 0 / 10%);
+    --light-transparent: oklch(1 0 0 / 15%);
+
     --off-white: oklch(0.979 0.0082 31.48);
     --tangerine-300: oklch(0.7506 0.1642 48.89);
     --midnight: oklch(0.2766 0.0483 212.66);
 
-    --radius: 0.225rem;
+    --radius: 0.385rem;
 
     /* Light mode by default */
     color-scheme: light;
@@ -93,8 +96,8 @@
     --accent: var(--secondary);
     --accent-foreground: var(--blue-100);
     --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
+    --border: var(--lightr-transparent);
+    --input: var(--lighter-transparent);
     --ring: var(--blue-600);
     --chart-1: var(--blue-700);
     --chart-2: oklch(0.696 0.17 162.48);
@@ -107,7 +110,7 @@
     --sidebar-primary-foreground: var(--blue-100);
     --sidebar-accent: var(--secondary);
     --sidebar-accent-foreground: var(--blue-100);
-    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-border: var(--light-transparent);
     --sidebar-ring: var(--slate-600);
 }
 
@@ -150,13 +153,16 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
+.TabsTrigger {
+    background-color: black;
+}
+
+/* f1f5f9  f8fafc (white)
+
 /* Shared styles */
 body {
-    margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    display: flex;
-    place-items: center;
     font-family:
         "Karla",
         system-ui,
@@ -171,7 +177,7 @@ body {
 }
 
 a {
-    font-weight: 500;
+    font-weight: 700;
     text-decoration: inherit;
 }
 a:hover {
@@ -190,10 +196,15 @@ button {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: var(--blue-100);
     cursor: pointer;
     transition: border-color 0.25s;
 }
+
+landing-header {
+    background-color: var(--blue-100);
+    margin: 5;
+}
+
 .dark button {
     background-color: var(--color-slate-900);
 }
