@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
 } from "@/components/base/sidebar";
 import { PanelLeftClose } from "lucide-react";
-import { PurchLogoSquare } from "@/components/icons/purch-logo";
+import { PurchLogoSquare, PurchLogoText } from "@/components/icons/purch-logo";
 import { Link } from "@tanstack/react-router";
 import { pagesConfig } from "@/config/pages";
 import { useSidebar } from "@/components/base/sidebar";
@@ -31,12 +31,7 @@ export function NavBar() {
         {openOrMobile ? (
           <div className="flex ml-1 mt-2 justify-between items-center">
             <Link to="/">
-              <div className="flex items-center h-8 group cursor-pointer w-fit">
-                <PurchLogoSquare color="black" size="27" />
-                <span className="logo-text font-bold text-xl mb-1 ml-2">
-                  Purch
-                </span>
-              </div>
+              <PurchLogoText />
             </Link>
             <Button size="sm" variant="ghost" onClick={toggleSidebar}>
               <PanelLeftClose />
