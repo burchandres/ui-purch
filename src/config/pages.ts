@@ -1,26 +1,26 @@
-import { House, Settings } from "lucide-react";
+import { House, Settings } from 'lucide-react';
 
 export type PageConfig = {
-  url: string;
-  display: string;
-  icon: React.FC;
+	url: string;
+	display: string;
+	icon: React.FC;
 };
 
 export type PagesConfig = {
-  pages: PageConfig[];
+	pages: PageConfig[];
 };
 
 export const pagesConfig: PagesConfig = {
-  pages: [
-    {
-      url: "home",
-      display: "Home",
-      icon: House,
-    },
-    {
-      url: "settings",
-      display: "Settings",
-      icon: Settings,
-    },
-  ],
+	pages: [
+		{
+			url: 'home',
+			display: 'Home',
+			icon: House,
+		},
+		{
+			url: 'settings',
+			display: 'Settings',
+			icon: Settings,
+		},
+	],
 };

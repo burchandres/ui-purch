@@ -1,13 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { login } from "@/lib/api/user";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { login } from '@/lib/api/user';
 
 export const useLogin = () => {
-  const qc = useQueryClient();
+	const qc = useQueryClient();
 
-  return useMutation({
-    mutationFn: login,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["currentUser"] });
-    },
-  });
+	return useMutation({
+		mutationFn: login,
+		onSuccess: () => {
+			qc.invalidateQueries({ queryKey: ['currentUser'] });
+		},
+	});
 };
