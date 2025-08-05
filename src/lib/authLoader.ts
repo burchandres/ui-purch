@@ -1,16 +1,8 @@
 import { redirect } from "@tanstack/react-router";
-import { queryClient } from "@/lib/queryClient";
-import { getCurrentUser } from "@/lib/api/user";
+import { checkIfLoggedIn } from "@/lib/api/user";
 
-// acts as a gateway to inform routing loaders whether to redirect or not
+// acts as a gateway
 export async function authLoader() {
-  const res = await queryClient.fetchQuery({
-    queryKey: ["currentUser"],
-    queryFn: getCurrentUser,
-  });
-  console.log("res", res);
-  if (!res || (res.detail && res.detail === "Could not validate credentials")) {
-    throw redirect({ to: "/" });
-  }
-  return res;
+  const loggedIn = await checkIfLoggedIn();
+  if (!loggedIn) throw redirect({ to: "/" });
 }

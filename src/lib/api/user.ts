@@ -1,5 +1,6 @@
 import { api } from "./api";
 import { snakeCase, mapKeys } from "lodash";
+import { queryClient } from "../queryClient";
 
 export type LoginData = {
   username: string;
@@ -17,6 +18,16 @@ const keysToSnakeCase = (obj: Record<string, any>) =>
 export const getCurrentUser = async () => {
   const res = await api.get("/users/current");
   return res.data;
+};
+
+export const checkIfLoggedIn = async () => {
+  const res = await queryClient.fetchQuery({
+    queryKey: ["currentUser"],
+    queryFn: getCurrentUser,
+  });
+  return (
+    res && (!res.detail || res.detail !== "Could not validate credentials")
+  );
 };
 
 export const createUser = async (data: CreateUserData) => {
