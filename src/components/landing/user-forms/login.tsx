@@ -2,7 +2,7 @@ import { z } from "zod";
 import { configToSchema, FormCard } from "./shared-form";
 import { login, type LoginData } from "@/lib/api/user";
 import { toast } from "sonner";
-import { redirect } from "@tanstack/react-router";
+import { redirect, useNavigate } from "@tanstack/react-router";
 
 const fields = {
   username: {
@@ -25,18 +25,26 @@ const fields = {
 
 const zodSchema = configToSchema(fields);
 
-async function onSubmit(values: z.infer<typeof zodSchema>) {
+async function onSubmit(
+  values: z.infer<typeof zodSchema>,
+  navigate?: (options: any) => void,
+) {
+  const url = "/app/dashboard";
   const res = await login(values as LoginData);
   if (res.message && res.message === "Login successful")
-    throw redirect({ to: "/app/dashboard" });
+    if (navigate) navigate({ to: url });
+    else throw redirect({ to: url });
   else
     toast.error(
       typeof res === "string" && res.length > 0 ? res : "Unable to login",
     );
 }
 
-export const LoginCard = () =>
-  FormCard({
+export const LoginCard = () => {
+  const navigate = useNavigate();
+  return FormCard({
     config: fields,
     onSubmit: onSubmit,
+    navigate: navigate,
   });
+};

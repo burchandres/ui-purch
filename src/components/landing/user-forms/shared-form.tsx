@@ -43,17 +43,20 @@ export function schemaToForm(schema: ZodObject<FieldValues>) {
 export function FormCard({
   config,
   onSubmit,
+  navigate,
 }: {
   config: FieldsConfig;
-  onSubmit: (values: any) => void;
+  onSubmit: (values: any, navigate?: (options: any) => void) => void;
+  navigate?: (options: any) => void;
 }) {
   const zodSchema = configToSchema(config);
   const form = schemaToForm(zodSchema);
+  const handleSubmit = (values: any) => onSubmit(values, navigate);
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <Card>
             <CardContent>
               <div className="flex flex-col gap-6 mt-4">
