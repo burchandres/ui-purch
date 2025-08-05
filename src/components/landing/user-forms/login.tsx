@@ -25,20 +25,22 @@ const fields = {
 } as const;
 
 const zodSchema = configToSchema(fields);
+type LoginFormData = z.infer<typeof zodSchema>;
 
 async function onSubmit(
-	values: z.infer<typeof zodSchema>,
+	values: LoginFormData,
 	navigate?: (options: NavigateOptions) => void,
 ) {
 	const url = '/app/dashboard';
 	const res = await login(values as LoginData);
-	if (res.message && res.message === 'Login successful')
+	if (res.message && res.message === 'Login successful') {
 		if (navigate) navigate({ to: url });
 		else throw redirect({ to: url });
-	else
+	} else {
 		toast.error(
 			typeof res === 'string' && res.length > 0 ? res : 'Unable to login',
 		);
+	}
 }
 
 export const LoginCard = () => {

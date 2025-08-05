@@ -4,8 +4,8 @@ import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, type DefaultValues, type FieldValues } from 'react-hook-form';
-import { z, type ZodType, type ZodObject } from 'zod';
+import { useForm, type FieldValues } from 'react-hook-form';
+import { z, type ZodType } from 'zod';
 import type { NavigateOptions } from '@tanstack/react-router';
 
 type FieldConfig = {
@@ -15,11 +15,7 @@ type FieldConfig = {
 };
 type FieldsConfig = Record<string, FieldConfig>;
 
-type FormValues<T extends FieldsConfig> = {
-	[K in keyof T]: z.infer<T[K]['schema']>;
-};
-
-export function configToSchema(config: FieldsConfig): ZodObject {
+export function configToSchema(config: FieldsConfig) {
 	const shape: Record<string, ZodType> = {};
 
 	Object.keys(config).forEach((key) => {
@@ -29,36 +25,33 @@ export function configToSchema(config: FieldsConfig): ZodObject {
 	return z.object(shape);
 }
 
-export function schemaToForm(schema: ZodObject<FieldValues>) {
-	const defaultValues: DefaultValues<FieldValues> = {};
-
-	if ('shape' in schema && schema.shape) {
-		Object.keys(schema.shape).forEach((key) => {
-			(defaultValues as FieldValues)[key] = '';
-		});
-	}
-
-	return useForm<FieldValues>({
-		resolver: zodResolver(schema),
-		defaultValues,
-	});
-}
-
-export function FormCard<T extends FieldsConfig>({
+export function FormCard({
 	config,
 	onSubmit,
 	navigate,
 }: {
 	config: FieldsConfig;
 	onSubmit: (
-		values: FormValues<T>,
+		// biome-ignore lint/suspicious/noExplicitAny: i dont think this matters
+		values: any,
 		navigate?: (options: NavigateOptions) => void,
 	) => void;
 	navigate?: (options: NavigateOptions) => void;
 }) {
 	const zodSchema = configToSchema(config);
-	const form = schemaToForm(zodSchema);
-	const handleSubmit = (values: FormValues<T>) => onSubmit(values, navigate);
+
+	const form = useForm({
+		resolver: zodResolver(zodSchema),
+		defaultValues: Object.keys(config).reduce(
+			(acc, key) => {
+				acc[key] = '';
+				return acc;
+			},
+			{} as Record<string, string>,
+		),
+	});
+
+	const handleSubmit = (values: FieldValues) => onSubmit(values, navigate);
 
 	return (
 		<Form {...form}>
