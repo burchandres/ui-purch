@@ -9,7 +9,7 @@ import {
 } from "../base/dialog";
 import { Button } from "../base/button";
 import { logout } from "@/lib/api/user";
-import { redirect, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 export const LogOutButtonDialog = () => {
   const navigate = useNavigate();

@@ -6,9 +6,8 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarRail,
 } from "@/components/base/sidebar";
-import { CircleUser, PanelLeftClose, SquareUser } from "lucide-react";
+import { PanelLeftClose, SquareUser } from "lucide-react";
 import { PurchLogoSquare, PurchLogoText } from "@/components/icons/purch-logo";
 import { Link } from "@tanstack/react-router";
 import { pagesConfig } from "@/config/pages";
@@ -16,15 +15,6 @@ import { useSidebar } from "@/components/base/sidebar";
 import { Button } from "@/components/base/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../base/popover";
 import { LogOutButtonDialog } from "./log-out-button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogTitle,
-  DialogTrigger,
-} from "../base/dialog";
 
 export function NavBar() {
   const { open, isMobile, openMobile, toggleSidebar } = useSidebar();

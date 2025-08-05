@@ -12,8 +12,9 @@ export type CreateUserData = LoginData & {
   lastName: string;
 };
 
+// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
 const keysToSnakeCase = (obj: Record<string, any>) =>
-  mapKeys(obj, (value, key) => snakeCase(key));
+  mapKeys(obj, (_value, key) => snakeCase(key));
 
 export const getCurrentUser = async () => {
   const res = await api.get("/users/current");
