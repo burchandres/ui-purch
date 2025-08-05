@@ -8,11 +8,8 @@ export async function authLoader() {
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
-  if (
-    !res ||
-    !res.details ||
-    res.details === "Could not validate credentials"
-  ) {
+  console.log("res", res);
+  if (!res || (res.detail && res.detail === "Could not validate credentials")) {
     throw redirect({ to: "/" });
   }
   return res;

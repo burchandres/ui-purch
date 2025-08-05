@@ -40,8 +40,8 @@ const fields = {
 } as const;
 
 const zodSchema = configToSchema(fields);
+
 async function onSubmit(values: z.infer<typeof zodSchema>) {
-  // make api call
   const res = await createUser(values as CreateUserData);
   console.log("res", res);
   if (res.status && res.status === 200)

@@ -45,7 +45,7 @@ export function FormCard({
   onSubmit,
 }: {
   config: FieldsConfig;
-  onSubmit: (values: any) => { error: boolean; message: string };
+  onSubmit: (values: any) => void;
 }) {
   const zodSchema = configToSchema(config);
   const form = schemaToForm(zodSchema);
