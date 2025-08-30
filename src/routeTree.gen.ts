@@ -13,6 +13,8 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppSettingsApplicationRouteImport } from './routes/app.settings.application'
+import { Route as AppSettingsAccountRouteImport } from './routes/app.settings.account'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -34,32 +36,67 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsApplicationRoute = AppSettingsApplicationRouteImport.update({
+  id: '/application',
+  path: '/application',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAccountRoute = AppSettingsAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
-  '/app/settings': typeof AppSettingsRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
+  '/app/settings/account': typeof AppSettingsAccountRoute
+  '/app/settings/application': typeof AppSettingsApplicationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
-  '/app/settings': typeof AppSettingsRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
+  '/app/settings/account': typeof AppSettingsAccountRoute
+  '/app/settings/application': typeof AppSettingsApplicationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
-  '/app/settings': typeof AppSettingsRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
+  '/app/settings/account': typeof AppSettingsAccountRoute
+  '/app/settings/application': typeof AppSettingsApplicationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/dashboard' | '/app/settings'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/dashboard'
+    | '/app/settings'
+    | '/app/settings/account'
+    | '/app/settings/application'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/dashboard' | '/app/settings'
-  id: '__root__' | '/' | '/app' | '/app/dashboard' | '/app/settings'
+  to:
+    | '/'
+    | '/app'
+    | '/app/dashboard'
+    | '/app/settings'
+    | '/app/settings/account'
+    | '/app/settings/application'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/dashboard'
+    | '/app/settings'
+    | '/app/settings/account'
+    | '/app/settings/application'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -97,17 +134,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings/application': {
+      id: '/app/settings/application'
+      path: '/application'
+      fullPath: '/app/settings/application'
+      preLoaderRoute: typeof AppSettingsApplicationRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/account': {
+      id: '/app/settings/account'
+      path: '/account'
+      fullPath: '/app/settings/account'
+      preLoaderRoute: typeof AppSettingsAccountRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
   }
 }
 
+interface AppSettingsRouteChildren {
+  AppSettingsAccountRoute: typeof AppSettingsAccountRoute
+  AppSettingsApplicationRoute: typeof AppSettingsApplicationRoute
+}
+
+const AppSettingsRouteChildren: AppSettingsRouteChildren = {
+  AppSettingsAccountRoute: AppSettingsAccountRoute,
+  AppSettingsApplicationRoute: AppSettingsApplicationRoute,
+}
+
+const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
+  AppSettingsRouteChildren,
+)
+
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
-  AppSettingsRoute: typeof AppSettingsRoute
+  AppSettingsRoute: typeof AppSettingsRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
-  AppSettingsRoute: AppSettingsRoute,
+  AppSettingsRoute: AppSettingsRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
