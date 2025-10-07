@@ -6,15 +6,21 @@ export type PageConfig = {
 	icon: React.FC;
 };
 
-export const pages: PageConfig[] = [
-	{
-		url: 'home',
-		display: 'Home',
-		icon: House,
-	},
-	{
-		url: 'settings',
-		display: 'Settings',
-		icon: Settings,
-	},
-];
+export type PagesConfig = {
+	pages: PageConfig[];
+};
+
+export const pagesConfig: PagesConfig = {
+	pages: [
+		{
+			url: 'dashboard',
+			display: 'Dashboard',
+			icon: House,
+		},
+		{
+			url: 'settings',
+			display: 'Settings',
+			icon: Settings,
+		},
+	],
+};

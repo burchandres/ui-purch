@@ -1,17 +1,20 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { NavBar } from '../components/app/navbar';
-import { SidebarProvider } from '../components/base/sidebar';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { QueryClientProvider } from '@tanstack/react-query';
+// import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { queryClient } from '@/lib/queryClient';
+import { Toaster } from '@/components/base/sonner';
 
 export const Route = createRootRoute({
 	component: () => (
 		<>
-			<SidebarProvider v-slot="{isMobile, state}">
-				<NavBar />
-				<main></main>
-			</SidebarProvider>
-			<Outlet />
-			<TanStackRouterDevtools initialIsOpen={false} />
+			<QueryClientProvider client={queryClient}>
+				<main />
+				<Toaster />
+				<Outlet />
+			</QueryClientProvider>
+			{/*
+        <TanStackRouterDevtools initialIsOpen={false} />
+      */}
 		</>
 	),
 });

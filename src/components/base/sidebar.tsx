@@ -5,7 +5,7 @@ import type { VariantProps } from 'class-variance-authority';
 import { PanelLeftIcon } from 'lucide-react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shadcn';
 import { Button } from '@/components/base/button';
 import { Input } from '@/components/base/input';
 import { Separator } from '@/components/base/separator';
@@ -82,6 +82,7 @@ function SidebarProvider({
 			}
 
 			// This sets the cookie to keep the sidebar state.
+			// biome-ignore lint/suspicious/noDocumentCookie: gonna implement some state for this soon anyway
 			document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
 		},
 		[setOpenProp, open],
