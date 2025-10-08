@@ -3,6 +3,8 @@ import { configToSchema, FormCard } from './shared-form';
 import { createUser } from '@/lib/api/user';
 import type { CreateUserData } from '@/lib/api/user';
 import { toast } from 'sonner';
+import { submitLogin } from './login';
+import { useNavigate, type UseNavigateResult } from '@tanstack/react-router';
 
 const fields = {
 	username: {
@@ -42,17 +44,24 @@ const fields = {
 const zodSchema = configToSchema(fields);
 type CreateAccountFormData = z.infer<typeof zodSchema>;
 
-async function onSubmit(values: CreateAccountFormData) {
+async function onSubmit(
+	values: CreateAccountFormData,
+	navigate: UseNavigateResult<string>,
+) {
 	const res = await createUser(values as CreateUserData);
 	console.log('res', res);
-	if (res.status && res.status === 200)
-		toast.success('User successfully created. Login to continue');
-	else
+	if (res.status && res.status === 200) {
+		toast.success('User successfully created.');
+		await submitLogin({...values}, navigate);
+	} else {
 		toast.error(typeof res?.data === 'string' ? res.data : 'An error occurred');
+	}
 }
 
-export const CreateAccountCard = () =>
-	FormCard({
+export const CreateAccountCard = () => {
+	const navigate = useNavigate();
+	return FormCard({
 		config: fields,
-		onSubmit: onSubmit,
+		onSubmit: (vals) => onSubmit(vals, navigate),
 	});
+};

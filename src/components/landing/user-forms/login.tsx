@@ -27,10 +27,11 @@ const fields = {
 const zodSchema = configToSchema(fields);
 type LoginFormData = z.infer<typeof zodSchema>;
 
-async function onSubmit(
+export async function submitLogin(
 	values: LoginFormData,
 	navigate: UseNavigateResult<string>,
 ) {
+  console.log('vals', values)
 	const res = await login(values as LoginData);
 	console.log('res', res);
 	if (res && res.status === 200) {
@@ -45,7 +46,7 @@ export const LoginCard = () => {
 	const navigate = useNavigate();
 	return FormCard({
 		config: fields,
-		onSubmit: (vals) => onSubmit(vals, navigate),
+		onSubmit: (vals) => submitLogin(vals, navigate),
 		navigate: navigate,
 	});
 };
