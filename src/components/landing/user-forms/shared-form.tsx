@@ -4,22 +4,24 @@ import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, type FieldValues } from 'react-hook-form';
+import { Controller, useForm, type FieldValues } from 'react-hook-form';
 import { z, type ZodType } from 'zod';
 import type { NavigateOptions } from '@tanstack/react-router';
+import type { FC } from 'react';
 
-type FieldConfig = {
-	type: string;
+export type FieldConfig = {
+	inputType: string;
 	display: string;
 	schema: ZodType;
+	component?: FC;
 };
-type FieldsConfig = Record<string, FieldConfig>;
+export type FieldsConfig = Record<string, FieldConfig>;
 
 export function configToSchema(config: FieldsConfig) {
 	const shape: Record<string, ZodType> = {};
 
 	Object.keys(config).forEach((key) => {
-		shape[key] = config[key].schema;
+		if (key !== 'component') shape[key] = config[key].schema;
 	});
 
 	return z.object(shape);
@@ -44,7 +46,13 @@ export function FormCard({
 		resolver: zodResolver(zodSchema),
 		defaultValues: Object.keys(config).reduce(
 			(acc, key) => {
-				acc[key] = '';
+				if (key)
+					acc[key] =
+						config[key].inputType === 'income'
+							? undefined
+							: config[key].inputType === 'incomeRate'
+								? 'annual'
+								: '';
 				return acc;
 			},
 			{} as Record<string, string>,
@@ -62,7 +70,28 @@ export function FormCard({
 							{Object.entries(config).map(([key, field]) => (
 								<div key={key} className="grid gap-2">
 									<Label htmlFor={key}>{field.display}</Label>
-									<Input id={key} type={field.type} {...form.register(key)} />
+									{field.component ? (
+										<Controller
+											control={form.control}
+											name={key}
+											render={({ field: controllerField }) => (
+												<field.component
+													id={key}
+													value={controllerField.value}
+													onChange={controllerField.onChange}
+													onValueChange={controllerField.onChange}
+													onBlur={controllerField.onBlur}
+													name={controllerField.name}
+												/>
+											)}
+										/>
+									) : (
+										<Input
+											id={key}
+											type={field.inputType}
+											{...form.register(key)}
+										/>
+									)}
 									{form.formState.errors[key] && (
 										<p className="text-red-500 text-sm">
 											{form.formState.errors[key]?.message as string}
