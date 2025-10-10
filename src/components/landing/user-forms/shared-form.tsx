@@ -1,13 +1,13 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { NavigateOptions } from '@tanstack/react-router';
+import type { FC } from 'react';
+import { Controller, type FieldValues, useForm } from 'react-hook-form';
+import { type ZodType, z } from 'zod';
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
 import { Label } from '@/components/base/label';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm, type FieldValues } from 'react-hook-form';
-import { z, type ZodType } from 'zod';
-import type { NavigateOptions } from '@tanstack/react-router';
-import type { FC } from 'react';
 
 export type FieldConfig = {
 	inputType: string;
@@ -55,7 +55,7 @@ export function FormCard({
 								: '';
 				return acc;
 			},
-			{} as Record<string, string>,
+			{} as Record<string, string | undefined>,
 		),
 	});
 
