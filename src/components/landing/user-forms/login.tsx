@@ -1,13 +1,13 @@
-import { z } from 'zod';
-import { configToSchema, FormCard } from './shared-form';
-import { login, type LoginData } from '@/lib/api/user';
-import { toast } from 'sonner';
-import { useNavigate } from '@tanstack/react-router';
 import type { UseNavigateResult } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { type LoginData, login } from '@/lib/api/user';
+import { configToSchema, type FieldsConfig, FormCard } from './shared-form';
 
-const fields = {
+const fields: FieldsConfig = {
 	username: {
-		type: 'text',
+		inputType: 'text',
 		display: 'Username',
 		schema: z
 			.string()
@@ -15,7 +15,7 @@ const fields = {
 			.max(20, { message: 'Username must be less than 20 characters' }),
 	},
 	password: {
-		type: 'password',
+		inputType: 'password',
 		display: 'Password',
 		schema: z
 			.string()
@@ -31,7 +31,7 @@ export async function submitLogin(
 	values: LoginFormData,
 	navigate: UseNavigateResult<string>,
 ) {
-  console.log('vals', values)
+	console.log('vals', values);
 	const res = await login(values as LoginData);
 	console.log('res', res);
 	if (res && res.status === 200) {

@@ -1,13 +1,12 @@
-import { z } from 'zod';
-import { configToSchema, FormCard, type FieldsConfig } from './shared-form';
-import { createUser } from '@/lib/api/user';
-import type { CreateUserData } from '@/lib/api/user';
+import { type UseNavigateResult, useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
-import { submitLogin } from './login';
-import { useNavigate, type UseNavigateResult } from '@tanstack/react-router';
-import { MoneyInput } from '@/components/inputs/money-input';
+import { z } from 'zod';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
-import { inputsConfig } from '@/config/inputs';
+import { MoneyInput } from '@/components/inputs/money-input';
+import type { CreateUserData } from '@/lib/api/user';
+import { createUser } from '@/lib/api/user';
+import { submitLogin } from './login';
+import { configToSchema, type FieldsConfig, FormCard } from './shared-form';
 
 const fields: FieldsConfig = {
 	username: {

@@ -9,7 +9,7 @@ export type InputsConfig = {
 export const inputsConfig: InputsConfig = {
 	income: {
 		min: 0,
-		max: 999999999999999.99,
+		max: 999999999999999,
 		rates: [
 			{
 				value: 'hourly',

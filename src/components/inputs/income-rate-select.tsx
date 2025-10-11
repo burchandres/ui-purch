@@ -1,6 +1,3 @@
-import { HelpCircle } from 'lucide-react';
-
-import { inputsConfig } from '@/config/inputs';
 import {
 	Select,
 	SelectContent,
@@ -14,7 +11,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/base/tooltip'; // Adjust import path as needed
-import { forwardRef, type ComponentRef, type ElementRef } from 'react';
+import { inputsConfig } from '@/config/inputs';
 
 interface IncomeRateSelectProps {
 	value?: string;
@@ -62,7 +59,7 @@ const IncomeRateSelect = forwardRef<
 				<TooltipProvider>
 					<SelectContent>
 						{rates.map((rate) => (
-							<Tooltip>
+							<Tooltip key={rate.value}>
 								<TooltipTrigger asChild>
 									<SelectItem key={rate.value} value={rate.value}>
 										<div className="flex items-center justify-between w-full">
