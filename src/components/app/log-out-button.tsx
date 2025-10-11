@@ -1,3 +1,6 @@
+import { useNavigate } from '@tanstack/react-router';
+import { logout } from '@/lib/api/user';
+import { Button } from '../base/button';
 import {
 	Dialog,
 	DialogClose,
@@ -7,16 +10,13 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '../base/dialog';
-import { Button } from '../base/button';
-import { logout } from '@/lib/api/user';
-import { useNavigate } from '@tanstack/react-router';
 
 export const LogOutButtonDialog = () => {
 	const navigate = useNavigate();
 
 	async function onLogout() {
 		await logout();
-		navigate({ to: '/' });
+		navigate({ to: '/landing' });
 	}
 
 	return (

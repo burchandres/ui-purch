@@ -1,7 +1,7 @@
 type IconProps = {
 	color: string;
 	pathString: string;
-	size?: string;
+	size?: string | number;
 	className?: string;
 };
 

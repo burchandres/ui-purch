@@ -33,7 +33,7 @@ export async function submitLogin(
 	console.log('res', res);
 	if (res && res.status === 200) {
 		toast.success(res?.data.message || 'Successfully logged in');
-		navigate({ to: '/app/dashboard' });
+		navigate({ to: '/dashboard' });
 	} else {
 		toast.error(res?.data.message || 'Unable to login');
 	}
