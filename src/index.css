@@ -216,3 +216,8 @@ button:focus-visible {
 		@apply bg-background text-foreground;
 	}
 }
+
+[data-slot="select-trigger"] {
+	font-size: 0.9rem; /* text-sm equivalent */
+	font-weight: 400; /* font-normal equivalent */
+}

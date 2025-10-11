@@ -1,6 +1,6 @@
-import { api } from './api';
-import { snakeCase, mapKeys } from 'lodash';
+import { mapKeys, snakeCase } from 'lodash';
 import { queryClient } from '../queryClient';
+import { api } from './api';
 
 export type LoginData = {
 	username: string;
@@ -18,6 +18,7 @@ const keysToSnakeCase = (obj: Record<string, any>) =>
 
 export const getCurrentUser = async () => {
 	const res = await api.post('/users/verify_auth');
+	console.log('va res', res);
 	return res;
 };
 
