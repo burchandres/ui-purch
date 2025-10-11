@@ -159,6 +159,10 @@
 /* f1f5f9  f8fafc (white)
 
 /* Shared styles */
+html {
+	overscroll-behavior-y: none;
+}
+
 body {
 	min-width: 320px;
 	min-height: 100vh;

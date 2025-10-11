@@ -1,16 +1,6 @@
-import { Link } from '@tanstack/react-router';
-import { PurchLogoText } from '@/components/icons/purch-logo';
-import { LoginCard } from './user-forms/login';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
 import { CreateAccountCard } from './user-forms/create-account';
-
-const Header = () => (
-	<div className="sticky top-0 p-4 z-100 bg-background w-full border">
-		<Link to="/">
-			<PurchLogoText />
-		</Link>
-	</div>
-);
+import { LoginCard } from './user-forms/login';
 
 const Body = () => (
 	<div className="block mt-8 ml-16 mr-16 text-lg text-center space-y-4">
@@ -42,7 +32,6 @@ const tabs = [
 export const LandingPage = () => {
 	return (
 		<div>
-			<Header />
 			<div className="flex w-full justify-center">
 				<Body />
 			</div>
