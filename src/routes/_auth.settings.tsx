@@ -1,10 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { SettingsPage } from '@/components/settings/settings-page';
 
-export type SettingsParams = {
-	section: 'application' | 'user';
-};
-
-export const Route = createFileRoute('/settings')({
+export const Route = createFileRoute('/_auth/settings')({
 	component: SettingsPage,
 });
