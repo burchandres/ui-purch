@@ -1,3 +1,4 @@
+import { capitalize } from 'lodash';
 import { type ComponentRef, forwardRef } from 'react';
 import {
 	Select,
@@ -11,12 +12,16 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from '@/components/base/tooltip'; // Adjust import path as needed
+} from '@/components/base/tooltip';
 import { inputsConfig } from '@/config/inputs';
 
 interface IncomeRateSelectProps {
-	value?: string;
+	value?: string | number;
+	id: string;
 	onValueChange?: (value: string) => void;
+	onChange?: (value: string) => void;
+	onBlur?: () => void;
+	name?: string;
 	placeholder?: string;
 	className?: string;
 	disabled?: boolean;
@@ -30,31 +35,35 @@ const IncomeRateSelect = forwardRef<
 		{
 			value,
 			onValueChange,
+			onChange,
 			placeholder = 'Select rate',
 			className,
 			disabled,
-			...props
+			onBlur,
+			name,
 		},
 		ref,
 	) => {
 		const rates = inputsConfig.income.rates;
 
 		// helper function to capitalize first letter
-		const formatLabel = (rate: (typeof rates)[0]) => {
-			return (
-				rate.label || rate.value.charAt(0).toUpperCase() + rate.value.slice(1)
-			);
+		const formatLabel = (rate: (typeof rates)[0]) =>
+			rate.label || capitalize(rate.value);
+
+		const handleValueChange = (val: string) => {
+			onValueChange?.(val);
+			onChange?.(val);
 		};
 
 		return (
 			<Select
 				defaultValue="annual"
-				value={value}
-				onValueChange={onValueChange}
+				value={typeof value === 'number' ? value.toString() : value}
+				onValueChange={handleValueChange}
 				disabled={disabled}
-				{...props}
+				name={name}
 			>
-				<SelectTrigger ref={ref} className={className}>
+				<SelectTrigger ref={ref} className={className} onBlur={onBlur}>
 					<SelectValue placeholder={placeholder} />
 				</SelectTrigger>
 				<TooltipProvider>
@@ -62,7 +71,7 @@ const IncomeRateSelect = forwardRef<
 						{rates.map((rate) => (
 							<Tooltip key={rate.value}>
 								<TooltipTrigger asChild>
-									<SelectItem key={rate.value} value={rate.value}>
+									<SelectItem value={rate.value}>
 										<div className="flex items-center justify-between w-full">
 											<span>{formatLabel(rate)}</span>
 										</div>

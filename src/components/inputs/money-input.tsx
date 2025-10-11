@@ -1,8 +1,7 @@
-import { NumericFormat } from 'react-number-format';
-import type { NumericFormatProps } from 'react-number-format';
-
-import { cn } from '@/lib/shadcn';
 import { forwardRef } from 'react';
+import type { NumericFormatProps } from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
+import { cn } from '@/lib/shadcn';
 
 interface MoneyInputProps
 	extends Omit<
@@ -12,14 +11,25 @@ interface MoneyInputProps
 		| 'prefix'
 		| 'decimalScale'
 		| 'fixedDecimalScale'
+		| 'onChange'
 	> {
 	min?: number;
 	max?: number;
-	onChange?: (value: number) => void;
+	onChange?: (value: number | undefined) => void; // for RHF forms
 }
 
 const MoneyInput = forwardRef<HTMLInputElement, MoneyInputProps>(
-	({ className, min = 0, max, onValueChange, onChange, ...props }, ref) => {
+	(
+		{
+			className,
+			min = 0,
+			max = 99999999999,
+			onValueChange,
+			onChange,
+			...props
+		},
+		ref,
+	) => {
 		return (
 			<NumericFormat
 				{...props}
@@ -43,7 +53,7 @@ const MoneyInput = forwardRef<HTMLInputElement, MoneyInputProps>(
 					// call RHF onChange with numeric value instead of formatted string
 					if (onChange) {
 						// create a synthetic event-like object if needed, or just pass the number
-						onChange(values.floatValue ?? 0);
+						onChange(values.floatValue);
 					}
 				}}
 				// remove the default onChange behavior by not passing it through
@@ -52,7 +62,6 @@ const MoneyInput = forwardRef<HTMLInputElement, MoneyInputProps>(
 					'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
 					'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
 					'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-					// 'font-mono',
 					className,
 				)}
 				placeholder="$"

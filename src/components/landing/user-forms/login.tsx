@@ -1,31 +1,28 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { UseNavigateResult } from '@tanstack/react-router';
 import { useNavigate } from '@tanstack/react-router';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { Button } from '@/components/base/button';
+import { Card, CardContent } from '@/components/base/card';
+import { Form } from '@/components/base/form';
+import { Input } from '@/components/base/input';
 import { type LoginData, login } from '@/lib/api/user';
-import { configToSchema, type FieldsConfig, FormCard } from './shared-form';
+import { FormField } from './form-field';
 
-const fields: FieldsConfig = {
-	username: {
-		inputType: 'text',
-		display: 'Username',
-		schema: z
-			.string()
-			.min(1, { message: 'Username is required' })
-			.max(20, { message: 'Username must be less than 20 characters' }),
-	},
-	password: {
-		inputType: 'password',
-		display: 'Password',
-		schema: z
-			.string()
-			.min(4, { message: 'Password must be at least 4 characters' })
-			.max(20, { message: 'Password must be less than 20 characters' }),
-	},
-} as const;
+const loginSchema = z.object({
+	username: z
+		.string()
+		.min(1, { message: 'Username is required' })
+		.max(20, { message: 'Username must be less than 20 characters' }),
+	password: z
+		.string()
+		.min(4, { message: 'Password must be at least 4 characters' })
+		.max(20, { message: 'Password must be less than 20 characters' }),
+});
 
-const zodSchema = configToSchema(fields);
-type LoginFormData = z.infer<typeof zodSchema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export async function submitLogin(
 	values: LoginFormData,
@@ -44,9 +41,53 @@ export async function submitLogin(
 
 export const LoginCard = () => {
 	const navigate = useNavigate();
-	return FormCard({
-		config: fields,
-		onSubmit: (vals) => submitLogin(vals, navigate),
-		navigate: navigate,
+
+	const form = useForm<LoginFormData>({
+		resolver: zodResolver(loginSchema),
+		defaultValues: {
+			username: '',
+			password: '',
+		},
 	});
+
+	const handleSubmit = (values: LoginFormData) => submitLogin(values, navigate);
+
+	return (
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+				<Card>
+					<CardContent>
+						<div className="flex flex-col gap-6 mt-4">
+							<FormField
+								id="username"
+								label="Username"
+								error={form.formState.errors.username?.message}
+							>
+								<Input
+									id="username"
+									type="text"
+									{...form.register('username')}
+								/>
+							</FormField>
+
+							<FormField
+								id="password"
+								label="Password"
+								error={form.formState.errors.password?.message}
+							>
+								<Input
+									id="password"
+									type="password"
+									{...form.register('password')}
+								/>
+							</FormField>
+						</div>
+						<Button className="mt-4" type="submit">
+							Submit
+						</Button>
+					</CardContent>
+				</Card>
+			</form>
+		</Form>
+	);
 };
