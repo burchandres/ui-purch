@@ -1,10 +1,10 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { type LucideIcon, SidebarOpen, SquareUser } from 'lucide-react';
+import { SidebarOpen, SquareUser } from 'lucide-react';
 import { type FC, useEffect } from 'react';
 import { pagesConfig } from '@/config/pages';
 import { Button } from '../base/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../base/popover';
-import { Sheet, SheetContent, SheetTrigger } from '../base/sheet';
+import { Sheet, SheetTrigger } from '../base/sheet';
 import { PurchLogoSquare } from '../icons/purch-logo';
 import { LogOutButtonDialog } from './log-out-button';
 import { NavBar } from './navbar';

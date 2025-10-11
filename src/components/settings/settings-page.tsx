@@ -2,7 +2,6 @@ import { AppWindow, type LucideIcon, SquareUser, Toilet } from 'lucide-react';
 import type { FC } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
 import { AccountSettings } from './account-settings';
-import { ApplicationSettings } from './applicaiton-settings';
 
 type TabConfig = {
 	id: string;
