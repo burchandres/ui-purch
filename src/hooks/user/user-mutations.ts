@@ -33,30 +33,8 @@ export const useUpdateUser = () => {
 
 	const mutation = useMutation({
 		mutationFn: (data: Partial<CreateUserData>) => updateUser(data),
-		onMutate: async (newUserData) => {
+		onMutate: async () => {
 			await queryClient.cancelQueries({ queryKey: [queryKeys.users.current] });
-			const previousUser = queryClient.getQueryData([queryKeys.users.current]);
-
-			queryClient.setQueryData(
-				[queryKeys.users.current],
-				(old: Partial<CreateUserData>) => ({
-					...old,
-					...newUserData,
-				}),
-			);
-
-			return { previousUser };
-		},
-		onError: (err, newUserData, context) => {
-			console.error('error updating user with new data', newUserData, err);
-			if (context?.previousUser) {
-				queryClient.setQueryData(
-					[queryKeys.users.current],
-					context.previousUser,
-				);
-			}
-		},
-		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: [queryKeys.users.current] });
 		},
 	});

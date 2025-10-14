@@ -48,6 +48,18 @@ const createAccountSchema = z.object({
 // edit schema - at least one field must be provided
 const editAccountSchema = createEditSchema(createAccountSchema, {
 	message: 'You must update at least one field',
+}).extend({
+	password: z
+		.string()
+		.optional()
+		.refine(
+			(pw) => {
+				return !pw || (pw.length >= 4 && pw.length <= 20);
+			},
+			{
+				message: 'New password must be between 4 and 20 characters in length',
+			},
+		),
 });
 
 export type CreateAccountFormData = z.infer<typeof createAccountSchema>;

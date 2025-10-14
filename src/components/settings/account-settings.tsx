@@ -18,7 +18,7 @@ export const AccountSettings: FC = () => {
 					user?.income && !Number.isNaN(parseInt(user.income))
 						? parseInt(user.income)
 						: undefined,
-				// password: undefined,
+				password: undefined,
 			} as Partial<CreateAccountFormData>)}
 		/>
 	);
