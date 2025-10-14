@@ -57,7 +57,7 @@ export const LoginCard = () => {
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-6 mt-4">
+						<div className="flex flex-col gap-4">
 							<FormField
 								id="username"
 								label="Username"

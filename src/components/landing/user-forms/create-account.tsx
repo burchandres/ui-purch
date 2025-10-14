@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type UseNavigateResult, useNavigate } from '@tanstack/react-router';
+import { Lock } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -7,6 +8,11 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
 import type { CreateUserData } from '@/lib/api/user';
@@ -81,7 +87,7 @@ export const CreateAccountCard = () => {
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-4 mt-4">
+						<div className="flex flex-col gap-4">
 							<FormField
 								id="username"
 								label="Username"
@@ -174,9 +180,17 @@ export const CreateAccountCard = () => {
 								</FormField>
 							</div>
 						</div>
-						<Button className="mt-4" type="submit">
-							Submit
-						</Button>
+						<div className="flex gap-4 mt-4 items-center">
+							<Button type="submit">Submit</Button>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Lock size={16} />
+								</TooltipTrigger>
+								<TooltipContent side="right" className="max-w-45">
+									<p>Purch doesn't share your data with anyone else</p>
+								</TooltipContent>
+							</Tooltip>
+						</div>
 					</CardContent>
 				</Card>
 			</form>
