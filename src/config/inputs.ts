@@ -1,8 +1,16 @@
+export type IncomeRate =
+	| 'hourly'
+	| 'weekly'
+	| 'biweekly'
+	| 'bimonthly'
+	| 'monthly'
+	| 'annual';
+
 export type InputsConfig = {
 	income: {
 		min: number;
 		max: number;
-		rates: { label?: string; value: string; tooltip?: string }[];
+		rates: { label?: string; value: IncomeRate; tooltip?: string }[];
 	};
 };
 

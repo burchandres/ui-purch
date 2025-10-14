@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
-import { CreateAccountCard } from './user-forms/create-account';
+import { AccountCard } from './user-forms/account';
 import { LoginCard } from './user-forms/login';
 
 const Body = () => (
@@ -20,7 +20,7 @@ const tabs = [
 	{
 		id: 'create',
 		display: 'Create account',
-		component: CreateAccountCard,
+		component: AccountCard,
 	},
 	{
 		id: 'login',

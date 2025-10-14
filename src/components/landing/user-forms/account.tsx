@@ -15,11 +15,12 @@ import {
 } from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
-import type { CreateUserData } from '@/lib/api/user';
-import { createUser } from '@/lib/api/user';
+import { useRegister, useUpdateUser } from '@/hooks/user/user-mutations';
 import { FormField } from './form-field';
 import { submitLogin } from './login';
+import { createEditSchema } from './utils';
 
+// create schema requires all fields
 const createAccountSchema = z.object({
 	username: z
 		.string()
@@ -39,48 +40,100 @@ const createAccountSchema = z.object({
 		.max(20, { message: 'Last name must be less than 20 characters' }),
 	income: z
 		.number()
-		.optional()
+		.optional() // not actually optional. just wanted to customize empty message
 		.refine((val) => val !== undefined, 'Income is required'),
 	incomeRate: z.string().optional(),
 });
 
-type CreateAccountFormData = z.infer<typeof createAccountSchema>;
+// edit schema - at least one field must be provided
+const editAccountSchema = createEditSchema(createAccountSchema, {
+	message: 'You must update at least one field',
+});
 
-async function onSubmit(
-	values: CreateAccountFormData,
-	navigate: UseNavigateResult<string>,
-) {
-	console.log('vals', values);
-	const res = await createUser(values as CreateUserData);
-	console.log('res', res);
-	if (res.status && res.status === 200) {
-		toast.success('User successfully created.');
-		await submitLogin(
-			{ username: values.username, password: values.password },
-			navigate,
-		);
-	} else {
-		toast.error(typeof res?.data === 'string' ? res.data : 'An error occurred');
-	}
+export type CreateAccountFormData = z.infer<typeof createAccountSchema>;
+type EditAccountFormData = z.infer<typeof editAccountSchema>;
+
+interface AccountCardProps {
+	mode?: 'create' | 'edit';
+	defaultValues?: Partial<CreateAccountFormData>;
 }
 
-export const CreateAccountCard = () => {
+export const AccountCard = ({
+	mode = 'create',
+	defaultValues,
+}: AccountCardProps) => {
 	const navigate = useNavigate();
+	const isEditMode = mode === 'edit';
 
-	const form = useForm<CreateAccountFormData>({
-		resolver: zodResolver(createAccountSchema),
-		defaultValues: {
-			username: '',
-			password: '',
-			firstName: '',
-			lastName: '',
-			income: undefined,
-			incomeRate: 'annual',
-		},
+	const { register, isLoading: isRegistering } = useRegister();
+	const { updateUser, isLoading: isUpdating } = useUpdateUser();
+
+	const form = useForm<CreateAccountFormData | EditAccountFormData>({
+		resolver: zodResolver(isEditMode ? editAccountSchema : createAccountSchema),
+		defaultValues: isEditMode
+			? defaultValues
+			: {
+					username: '',
+					password: undefined,
+					firstName: '',
+					lastName: '',
+					income: undefined,
+					incomeRate: 'annual',
+				},
 	});
 
-	const handleSubmit = (values: CreateAccountFormData) =>
-		onSubmit(values, navigate);
+	const handleSubmit = async (
+		values: CreateAccountFormData | EditAccountFormData,
+	) => {
+		if (isEditMode) {
+			// Filter out undefined values to only send changed fields
+			const updates = Object.fromEntries(
+				Object.entries(values).filter(
+					([_, value]) => value !== undefined && value !== '',
+				),
+			);
+
+			updateUser(updates, {
+				onSuccess: () => {
+					toast.success('Profile successfully updated');
+				},
+				onError: (error: any) => {
+					toast.error(
+						error?.response?.data || error?.message || 'An error occurred',
+					);
+				},
+			});
+		} else {
+			const createValues = values as CreateAccountFormData;
+			register(
+				{
+					username: createValues.username,
+					password: createValues.password,
+					first_name: createValues.firstName,
+					last_name: createValues.lastName,
+				},
+				{
+					onSuccess: async () => {
+						toast.success('User successfully created.');
+						await submitLogin(
+							{
+								username: createValues.username,
+								password: createValues.password,
+							},
+							navigate,
+						);
+					},
+					onError: (error: any) => {
+						toast.error(
+							error?.response?.data || error?.message || 'An error occurred',
+						);
+					},
+				},
+			);
+		}
+	};
+
+	const isLoading = isRegistering || isUpdating;
 
 	return (
 		<Form {...form}>
@@ -97,6 +150,7 @@ export const CreateAccountCard = () => {
 									id="username"
 									type="text"
 									{...form.register('username')}
+									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -109,6 +163,7 @@ export const CreateAccountCard = () => {
 									id="password"
 									type="password"
 									{...form.register('password')}
+									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -121,6 +176,7 @@ export const CreateAccountCard = () => {
 									id="firstName"
 									type="text"
 									{...form.register('firstName')}
+									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -133,6 +189,7 @@ export const CreateAccountCard = () => {
 									id="lastName"
 									type="text"
 									{...form.register('lastName')}
+									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -153,6 +210,7 @@ export const CreateAccountCard = () => {
 												onValueChange={field.onChange}
 												onBlur={field.onBlur}
 												name={field.name}
+												disabled={isLoading}
 											/>
 										)}
 									/>
@@ -174,6 +232,7 @@ export const CreateAccountCard = () => {
 												onValueChange={field.onChange}
 												onBlur={field.onBlur}
 												name={field.name}
+												disabled={isLoading}
 											/>
 										)}
 									/>
@@ -181,15 +240,19 @@ export const CreateAccountCard = () => {
 							</div>
 						</div>
 						<div className="flex gap-4 mt-4 items-center">
-							<Button type="submit">Submit</Button>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Lock size={16} />
-								</TooltipTrigger>
-								<TooltipContent side="right" className="max-w-45">
-									<p>Purch doesn't share your data with anyone else</p>
-								</TooltipContent>
-							</Tooltip>
+							<Button type="submit" disabled={isLoading}>
+								{isLoading ? 'Loading...' : isEditMode ? 'Update' : 'Submit'}
+							</Button>
+							{!isEditMode && (
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Lock size={16} />
+									</TooltipTrigger>
+									<TooltipContent side="right" className="max-w-45">
+										<p>Purch doesn't share your data with anyone else</p>
+									</TooltipContent>
+								</Tooltip>
+							)}
 						</div>
 					</CardContent>
 				</Card>
