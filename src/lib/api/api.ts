@@ -10,7 +10,7 @@ export const api = axios.create({
 api.interceptors.response.use(
 	(res) => res,
 	(err) => {
-		console.log('api err', err);
+		console.error('api err', err);
 		throw err;
 	},
 );

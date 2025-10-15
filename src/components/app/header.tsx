@@ -17,10 +17,6 @@ export const Header: FC = () => {
 
 	const buttonSize = 18 as const;
 
-	useEffect(() => {
-		console.log('page', currentPage);
-	}, [currentPage]);
-
 	return (
 		<Sheet>
 			<div className="sticky top-0 min-h-14 p-2 pl-3 pr-5 z-20 bg-background w-full border flex justify-between items-center">
