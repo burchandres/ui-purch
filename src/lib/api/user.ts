@@ -85,7 +85,7 @@ export const syncBankAccounts = async (publicToken: string) => {
 // helper function
 export const checkIfLoggedIn = async () => {
 	try {
-		const res = await verifyAuth();
+		await verifyAuth();
 		return true;
 	} catch {
 		return false;

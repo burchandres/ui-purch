@@ -1,4 +1,4 @@
-import { type FC, useEffect } from 'react';
+import type { FC } from 'react';
 import { useUser } from '@/hooks/user/login-logout';
 import { keysToCamelCase } from '@/lib/api/utils';
 import {

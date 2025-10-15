@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
 import { useLogin } from '@/hooks/user/login-logout';
+import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
 
 const loginSchema = z.object({
@@ -37,15 +38,15 @@ export async function submitLogin(
 			toast.success('Successfully logged in');
 			navigate({ to: '/dashboard' });
 		},
-		onError: (error: any) => {
-			toast.error(error?.response?.data?.message || 'Unable to login');
+		onError: (error: Error) => {
+			toast.error(parseErrorMessage(error));
 		},
 	});
 }
 
 export const LoginCard = () => {
 	const navigate = useNavigate();
-	const { login, isLoading, isError, error } = useLogin();
+	const { login, isLoading } = useLogin();
 
 	const form = useForm<LoginFormData>({
 		resolver: zodResolver(loginSchema),
@@ -61,10 +62,8 @@ export const LoginCard = () => {
 				toast.success('Successfully logged in');
 				navigate({ to: '/dashboard' });
 			},
-			onError: (error: any) => {
-				toast.error(
-					error?.response?.data?.message || error?.message || 'Unable to login',
-				);
+			onError: (error: Error) => {
+				toast.error(parseErrorMessage(error));
 			},
 		});
 	};
@@ -102,7 +101,7 @@ export const LoginCard = () => {
 							</FormField>
 						</div>
 						<Button className="mt-4" type="submit" disabled={isLoading}>
-							{isLoading ? 'Logging in...' : 'Submit'}
+							'Submit'
 						</Button>
 					</CardContent>
 				</Card>

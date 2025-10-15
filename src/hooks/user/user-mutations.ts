@@ -7,7 +7,7 @@ import {
 	updateUser,
 } from '@/lib/api/user';
 
-export const useRegister = () => {
+export const useRegisterUser = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({

@@ -1,6 +1,6 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { SidebarOpen, SquareUser } from 'lucide-react';
-import { type FC, useEffect } from 'react';
+import type { FC } from 'react';
 import { pagesConfig } from '@/config/pages';
 import { Button } from '../base/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../base/popover';

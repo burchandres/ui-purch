@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type UseNavigateResult, useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { Lock } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -15,7 +15,8 @@ import {
 } from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
-import { useRegister, useUpdateUser } from '@/hooks/user/user-mutations';
+import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
+import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
 import { submitLogin } from './login';
 import { createEditSchema } from './utils';
@@ -77,7 +78,7 @@ export const AccountCard = ({
 	const navigate = useNavigate();
 	const isEditMode = mode === 'edit';
 
-	const { register, isLoading: isRegistering } = useRegister();
+	const { register, isLoading: isRegistering } = useRegisterUser();
 	const { updateUser, isLoading: isUpdating } = useUpdateUser();
 
 	const form = useForm<CreateAccountFormData | EditAccountFormData>({
@@ -98,7 +99,7 @@ export const AccountCard = ({
 		values: CreateAccountFormData | EditAccountFormData,
 	) => {
 		if (isEditMode) {
-			// Filter out undefined values to only send changed fields
+			// filter out undefined values to only send changed fields
 			const updates = Object.fromEntries(
 				Object.entries(values).filter(
 					([_, value]) => value !== undefined && value !== '',
@@ -109,20 +110,15 @@ export const AccountCard = ({
 				onSuccess: () => {
 					toast.success('Profile successfully updated');
 				},
-				onError: (error: any) => {
-					toast.error(
-						error?.response?.data || error?.message || 'An error occurred',
-					);
+				onError: (error: Error) => {
+					toast.error(parseErrorMessage(error));
 				},
 			});
 		} else {
 			const createValues = values as CreateAccountFormData;
 			register(
 				{
-					username: createValues.username,
-					password: createValues.password,
-					first_name: createValues.firstName,
-					last_name: createValues.lastName,
+					...createValues,
 				},
 				{
 					onSuccess: async () => {
@@ -135,10 +131,8 @@ export const AccountCard = ({
 							navigate,
 						);
 					},
-					onError: (error: any) => {
-						toast.error(
-							error?.response?.data || error?.message || 'An error occurred',
-						);
+					onError: (error: Error) => {
+						toast.error(parseErrorMessage(error));
 					},
 				},
 			);
@@ -244,7 +238,9 @@ export const AccountCard = ({
 							</div>
 						</div>
 						<div className="flex gap-4 mt-4 items-center">
-							<Button type="submit">{isEditMode ? 'Update' : 'Submit'}</Button>
+							<Button type="submit" disabled={isRegistering || isUpdating}>
+								{isEditMode ? 'Update' : 'Submit'}
+							</Button>
 							{!isEditMode && (
 								<Tooltip>
 									<TooltipTrigger asChild>

@@ -1,5 +1,11 @@
 import type { IncomeRate } from '@/config/inputs';
 
+export type ApiError = {
+	response: {
+		data: string;
+	};
+};
+
 export type User = {
 	id: string;
 	last_updated?: number | null;
