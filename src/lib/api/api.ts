@@ -10,11 +10,7 @@ export const api = axios.create({
 api.interceptors.response.use(
 	(res) => res,
 	(err) => {
-		console.log('api err', err);
-		return err.response
-			? err.response
-			: {
-					data: 'Error sending request to server',
-				};
+		console.error('api err', err);
+		throw err;
 	},
 );

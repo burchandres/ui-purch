@@ -77,7 +77,7 @@ const IncomeRateSelect = forwardRef<
 										</div>
 									</SelectItem>
 								</TooltipTrigger>
-								<TooltipContent side="right">
+								<TooltipContent side="right" className="max-w-41">
 									{rate.tooltip && <p className="max-w-xs">{rate.tooltip}</p>}
 								</TooltipContent>
 							</Tooltip>

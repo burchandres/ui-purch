@@ -1,11 +1,7 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
-import { checkIfLoggedIn } from '@/lib/api/user';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { requireAuth } from '@/lib/auth-loader';
 
 export const Route = createFileRoute('/_auth')({
 	component: Outlet,
-	loader: async () => {
-		const loggedIn = await checkIfLoggedIn();
-		if (!loggedIn) throw redirect({ to: '/landing' });
-		// else, continue to normal page
-	},
+	loader: requireAuth,
 });

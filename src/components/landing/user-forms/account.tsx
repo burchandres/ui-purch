@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type UseNavigateResult, useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
+import { Lock } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -7,13 +8,20 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
-import type { CreateUserData } from '@/lib/api/user';
-import { createUser } from '@/lib/api/user';
+import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
+import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
 import { submitLogin } from './login';
+import { createEditSchema } from './utils';
 
+// create schema requires all fields
 const createAccountSchema = z.object({
 	username: z
 		.string()
@@ -33,55 +41,110 @@ const createAccountSchema = z.object({
 		.max(20, { message: 'Last name must be less than 20 characters' }),
 	income: z
 		.number()
-		.optional()
+		.optional() // not actually optional. just wanted to customize empty message
 		.refine((val) => val !== undefined, 'Income is required'),
 	incomeRate: z.string().optional(),
 });
 
-type CreateAccountFormData = z.infer<typeof createAccountSchema>;
+// edit schema - at least one field must be provided
+const editAccountSchema = createEditSchema(createAccountSchema, {
+	message: 'You must update at least one field',
+}).extend({
+	password: z
+		.string()
+		.optional()
+		.refine(
+			(pw) => {
+				return !pw || (pw.length >= 4 && pw.length <= 20);
+			},
+			{
+				message: 'New password must be between 4 and 20 characters in length',
+			},
+		),
+});
 
-async function onSubmit(
-	values: CreateAccountFormData,
-	navigate: UseNavigateResult<string>,
-) {
-	console.log('vals', values);
-	const res = await createUser(values as CreateUserData);
-	console.log('res', res);
-	if (res.status && res.status === 200) {
-		toast.success('User successfully created.');
-		await submitLogin(
-			{ username: values.username, password: values.password },
-			navigate,
-		);
-	} else {
-		toast.error(typeof res?.data === 'string' ? res.data : 'An error occurred');
-	}
+export type CreateAccountFormData = z.infer<typeof createAccountSchema>;
+type EditAccountFormData = z.infer<typeof editAccountSchema>;
+
+interface AccountCardProps {
+	mode?: 'create' | 'edit';
+	defaultValues?: Partial<CreateAccountFormData>;
 }
 
-export const CreateAccountCard = () => {
+export const AccountCard = ({
+	mode = 'create',
+	defaultValues,
+}: AccountCardProps) => {
 	const navigate = useNavigate();
+	const isEditMode = mode === 'edit';
 
-	const form = useForm<CreateAccountFormData>({
-		resolver: zodResolver(createAccountSchema),
-		defaultValues: {
-			username: '',
-			password: '',
-			firstName: '',
-			lastName: '',
-			income: undefined,
-			incomeRate: 'annual',
-		},
+	const { register, isLoading: isRegistering } = useRegisterUser();
+	const { updateUser, isLoading: isUpdating } = useUpdateUser();
+
+	const form = useForm<CreateAccountFormData | EditAccountFormData>({
+		resolver: zodResolver(isEditMode ? editAccountSchema : createAccountSchema),
+		defaultValues: isEditMode
+			? defaultValues
+			: {
+					username: '',
+					password: undefined,
+					firstName: '',
+					lastName: '',
+					income: undefined,
+					incomeRate: 'annual',
+				},
 	});
 
-	const handleSubmit = (values: CreateAccountFormData) =>
-		onSubmit(values, navigate);
+	const handleSubmit = async (
+		values: CreateAccountFormData | EditAccountFormData,
+	) => {
+		if (isEditMode) {
+			// filter out undefined values to only send changed fields
+			const updates = Object.fromEntries(
+				Object.entries(values).filter(
+					([_, value]) => value !== undefined && value !== '',
+				),
+			);
+
+			updateUser(updates, {
+				onSuccess: () => {
+					toast.success('Profile successfully updated');
+				},
+				onError: (error: Error) => {
+					toast.error(parseErrorMessage(error));
+				},
+			});
+		} else {
+			const createValues = values as CreateAccountFormData;
+			register(
+				{
+					...createValues,
+				},
+				{
+					onSuccess: async () => {
+						toast.success('User successfully created.');
+						await submitLogin(
+							{
+								username: createValues.username,
+								password: createValues.password,
+							},
+							navigate,
+						);
+					},
+					onError: (error: Error) => {
+						toast.error(parseErrorMessage(error));
+					},
+				},
+			);
+		}
+	};
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-4 mt-4">
+						<div className="flex flex-col gap-4">
 							<FormField
 								id="username"
 								label="Username"
@@ -174,9 +237,21 @@ export const CreateAccountCard = () => {
 								</FormField>
 							</div>
 						</div>
-						<Button className="mt-4" type="submit">
-							Submit
-						</Button>
+						<div className="flex gap-4 mt-4 items-center">
+							<Button type="submit" disabled={isRegistering || isUpdating}>
+								{isEditMode ? 'Update' : 'Submit'}
+							</Button>
+							{!isEditMode && (
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Lock size={16} />
+									</TooltipTrigger>
+									<TooltipContent side="right" className="max-w-45">
+										<p>Purch doesn't share your data with anyone else</p>
+									</TooltipContent>
+								</Tooltip>
+							)}
+						</div>
 					</CardContent>
 				</Card>
 			</form>

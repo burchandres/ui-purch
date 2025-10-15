@@ -8,7 +8,8 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
-import { type LoginData, login } from '@/lib/api/user';
+import { useLogin } from '@/hooks/user/login-logout';
+import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
 
 const loginSchema = z.object({
@@ -24,23 +25,28 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
+// Keep this exported for use in AccountCard
 export async function submitLogin(
 	values: LoginFormData,
 	navigate: UseNavigateResult<string>,
 ) {
-	console.log('vals', values);
-	const res = await login(values as LoginData);
-	console.log('res', res);
-	if (res && res.status === 200) {
-		toast.success(res?.data.message || 'Successfully logged in');
-		navigate({ to: '/dashboard' });
-	} else {
-		toast.error(res?.data.message || 'Unable to login');
-	}
+	// This function is still used by AccountCard after registration
+	// You might want to refactor AccountCard to use useLogin hook instead
+	const { login } = useLogin();
+	login(values, {
+		onSuccess: () => {
+			toast.success('Successfully logged in');
+			navigate({ to: '/dashboard' });
+		},
+		onError: (error: Error) => {
+			toast.error(parseErrorMessage(error));
+		},
+	});
 }
 
 export const LoginCard = () => {
 	const navigate = useNavigate();
+	const { login, isLoading } = useLogin();
 
 	const form = useForm<LoginFormData>({
 		resolver: zodResolver(loginSchema),
@@ -50,14 +56,24 @@ export const LoginCard = () => {
 		},
 	});
 
-	const handleSubmit = (values: LoginFormData) => submitLogin(values, navigate);
+	const handleSubmit = (values: LoginFormData) => {
+		login(values, {
+			onSuccess: () => {
+				toast.success('Successfully logged in');
+				navigate({ to: '/dashboard' });
+			},
+			onError: (error: Error) => {
+				toast.error(parseErrorMessage(error));
+			},
+		});
+	};
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-6 mt-4">
+						<div className="flex flex-col gap-4">
 							<FormField
 								id="username"
 								label="Username"
@@ -67,6 +83,7 @@ export const LoginCard = () => {
 									id="username"
 									type="text"
 									{...form.register('username')}
+									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -79,11 +96,12 @@ export const LoginCard = () => {
 									id="password"
 									type="password"
 									{...form.register('password')}
+									disabled={isLoading}
 								/>
 							</FormField>
 						</div>
-						<Button className="mt-4" type="submit">
-							Submit
+						<Button className="mt-4" type="submit" disabled={isLoading}>
+							'Submit'
 						</Button>
 					</CardContent>
 				</Card>

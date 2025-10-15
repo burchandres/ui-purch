@@ -1,48 +1,93 @@
-import { mapKeys, snakeCase } from 'lodash';
-import { queryClient } from '../queryClient';
 import { api } from './api';
+import type {
+	LinkTokenResponse,
+	User,
+	UserDelete,
+	UserResponse,
+} from './types';
+import { keysToSnakeCase } from './utils';
 
 export type LoginData = {
 	username: string;
 	password: string;
 };
 
-export type CreateUserData = LoginData & {
+export type CreateUserData = {
+	username: string;
+	password: string;
 	firstName: string;
 	lastName: string;
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-const keysToSnakeCase = (obj: Record<string, any>) =>
-	mapKeys(obj, (_value, key) => snakeCase(key));
+// GET /users/current
+export const getCurrentUser = async (): Promise<User> => {
+	const res = await api.get('/users/current');
+	return res.data;
+};
 
-export const getCurrentUser = async () => {
+// POST /users/verify_auth
+export const verifyAuth = async () => {
 	const res = await api.post('/users/verify_auth');
-	console.log('va res', res);
-	return res;
+	return res.data;
 };
 
-export const checkIfLoggedIn = async () => {
-	const res = await queryClient.fetchQuery({
-		queryKey: ['currentUser'],
-		queryFn: getCurrentUser,
-	});
-	const ok = res && res.status === 200;
-	console.log('ok', ok, 'res', res);
-	return ok;
-};
-
-export const createUser = async (data: CreateUserData) => {
-	const res = await api.post('/users/register', keysToSnakeCase(data));
-	return res;
-};
-
+// POST /users/login
 export const login = async (data: LoginData) => {
 	const form = new URLSearchParams(data);
 	const res = await api.post('/users/login', form);
-	return res;
+	return res.data;
 };
 
+// POST /users/logout
 export const logout = async () => {
-	await api.post('/users/logout');
+	const res = await api.post('/users/logout');
+	return res.data;
+};
+
+// POST /users/register
+export const registerUser = async (
+	data: CreateUserData,
+): Promise<UserResponse> => {
+	const payload = keysToSnakeCase(data);
+	const res = await api.post('/users/register', payload);
+	return res.data;
+};
+
+// PATCH /users/update
+export const updateUser = async (
+	data: Partial<CreateUserData>,
+): Promise<UserResponse> => {
+	const payload = keysToSnakeCase(data);
+	const res = await api.patch('/users/update', payload);
+	return res.data;
+};
+
+// DELETE /users/delete
+export const deleteUser = async (): Promise<UserDelete> => {
+	const res = await api.delete('/users/delete');
+	return res.data;
+};
+
+// GET /users/link-token
+export const getLinkToken = async (): Promise<LinkTokenResponse> => {
+	const res = await api.get('/users/link-token');
+	return res.data;
+};
+
+// POST /users/sync-bank-accounts
+export const syncBankAccounts = async (publicToken: string) => {
+	const res = await api.post('/users/sync-bank-accounts', null, {
+		params: { public_token: publicToken },
+	});
+	return res.data;
+};
+
+// helper function
+export const checkIfLoggedIn = async () => {
+	try {
+		await verifyAuth();
+		return true;
+	} catch {
+		return false;
+	}
 };
