@@ -33,8 +33,7 @@ export const useUpdateUser = () => {
 
 	const mutation = useMutation({
 		mutationFn: (data: Partial<CreateUserData>) => updateUser(data),
-		onMutate: async () => {
-			await queryClient.cancelQueries({ queryKey: [queryKeys.users.current] });
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [queryKeys.users.current] });
 		},
 	});

@@ -8,15 +8,14 @@ import {
 
 export const AccountSettings: FC = () => {
 	const { user } = useUser();
-
 	return (
 		<AccountCard
 			mode="edit"
 			defaultValues={keysToCamelCase({
 				...user,
 				income:
-					user?.income && !Number.isNaN(parseInt(user.income))
-						? parseInt(user.income)
+					user?.income && !Number.isNaN(parseFloat(user.income))
+						? parseFloat(user.income)
 						: undefined,
 				password: undefined,
 			} as Partial<CreateAccountFormData>)}
