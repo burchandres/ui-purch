@@ -145,8 +145,6 @@ export const AccountCard = ({
 		}
 	};
 
-	const isLoading = isRegistering || isUpdating;
-
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
@@ -162,7 +160,6 @@ export const AccountCard = ({
 									id="username"
 									type="text"
 									{...form.register('username')}
-									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -175,7 +172,6 @@ export const AccountCard = ({
 									id="password"
 									type="password"
 									{...form.register('password')}
-									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -188,7 +184,6 @@ export const AccountCard = ({
 									id="firstName"
 									type="text"
 									{...form.register('firstName')}
-									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -201,7 +196,6 @@ export const AccountCard = ({
 									id="lastName"
 									type="text"
 									{...form.register('lastName')}
-									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -222,7 +216,6 @@ export const AccountCard = ({
 												onValueChange={field.onChange}
 												onBlur={field.onBlur}
 												name={field.name}
-												disabled={isLoading}
 											/>
 										)}
 									/>
@@ -244,7 +237,6 @@ export const AccountCard = ({
 												onValueChange={field.onChange}
 												onBlur={field.onBlur}
 												name={field.name}
-												disabled={isLoading}
 											/>
 										)}
 									/>
@@ -252,9 +244,7 @@ export const AccountCard = ({
 							</div>
 						</div>
 						<div className="flex gap-4 mt-4 items-center">
-							<Button type="submit" disabled={isLoading}>
-								{isLoading ? 'Loading...' : isEditMode ? 'Update' : 'Submit'}
-							</Button>
+							<Button type="submit">{isEditMode ? 'Update' : 'Submit'}</Button>
 							{!isEditMode && (
 								<Tooltip>
 									<TooltipTrigger asChild>
