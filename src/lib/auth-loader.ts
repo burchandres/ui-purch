@@ -1,14 +1,14 @@
 import { redirect } from '@tanstack/react-router';
 import { apiConfig } from '@/config/api';
 import { queryKeys } from '@/config/query-keys';
-import { getCurrentUser } from '@/lib/api/user';
+import { getUserInfo } from '@/lib/api/user';
 import { queryClient } from '@/lib/queryClient';
 
 export async function requireAuth() {
 	try {
 		await queryClient.fetchQuery({
-			queryKey: [queryKeys.users.current],
-			queryFn: getCurrentUser,
+			queryKey: [queryKeys.user.info],
+			queryFn: getUserInfo,
 			staleTime: apiConfig.staleTimes.checkAuth,
 		});
 		return true;
@@ -20,8 +20,8 @@ export async function requireAuth() {
 export async function redirectIfAuth() {
 	try {
 		await queryClient.fetchQuery({
-			queryKey: [queryKeys.users.current],
-			queryFn: getCurrentUser,
+			queryKey: [queryKeys.user.info],
+			queryFn: getUserInfo,
 			staleTime: apiConfig.staleTimes.checkAuth,
 		});
 		throw redirect({ to: '/dashboard' });

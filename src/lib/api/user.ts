@@ -19,64 +19,64 @@ export type CreateUserData = {
 	lastName: string;
 };
 
-// GET /users/current
-export const getCurrentUser = async (): Promise<User> => {
-	const res = await api.get('/users/current');
+// GET /user/info
+export const getUserInfo = async (): Promise<User> => {
+	const res = await api.get('/user/info');
 	return res.data;
 };
 
-// POST /users/verify_auth
-export const verifyAuth = async () => {
-	const res = await api.post('/users/verify_auth');
-	return res.data;
-};
+// // POST /user/verify_auth
+// export const verifyAuth = async () => {
+// 	const res = await api.post('/user/verify_auth');
+// 	return res.data;
+// };
 
-// POST /users/login
+// POST /user/login
 export const login = async (data: LoginData) => {
 	const form = new URLSearchParams(data);
-	const res = await api.post('/users/login', form);
+	const res = await api.post('/user/login', form);
 	return res.data;
 };
 
-// POST /users/logout
+// POST /user/logout
 export const logout = async () => {
-	const res = await api.post('/users/logout');
+	const res = await api.post('/user/logout');
 	return res.data;
 };
 
-// POST /users/register
+// POST /user/register
 export const registerUser = async (
 	data: CreateUserData,
 ): Promise<UserResponse> => {
 	const payload = keysToSnakeCase(data);
-	const res = await api.post('/users/register', payload);
+	const res = await api.post('/user/register', payload);
 	return res.data;
 };
 
-// PATCH /users/update
+// PATCH /user/update
 export const updateUser = async (
 	data: Partial<CreateUserData>,
 ): Promise<UserResponse> => {
 	const payload = keysToSnakeCase(data);
-	const res = await api.patch('/users/update', payload);
+	const res = await api.patch('/user/update', payload);
 	return res.data;
 };
 
-// DELETE /users/delete
+// DELETE /user/delete
 export const deleteUser = async (): Promise<UserDelete> => {
-	const res = await api.delete('/users/delete');
+	const res = await api.delete('/user/delete');
 	return res.data;
 };
 
-// GET /users/link-token
+// GET /user/link-token
 export const getLinkToken = async (): Promise<LinkTokenResponse> => {
-	const res = await api.get('/users/link-token');
+	const res = await api.get('/user/link-token');
 	return res.data;
 };
 
-// POST /users/sync-bank-accounts
+// POST /user/sync-bank-accounts
 export const syncBankAccounts = async (publicToken: string) => {
-	const res = await api.post('/users/sync-bank-accounts', null, {
+	const res = await api.post('/user/sync-bank-accounts', null, {
 		params: { public_token: publicToken },
 	});
 	return res.data;
@@ -85,7 +85,7 @@ export const syncBankAccounts = async (publicToken: string) => {
 // helper function
 export const checkIfLoggedIn = async () => {
 	try {
-		await verifyAuth();
+		await getUserInfo();
 		return true;
 	} catch {
 		return false;

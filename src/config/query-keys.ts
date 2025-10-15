@@ -1,13 +1,13 @@
 export type QueryKeysConfig = {
-	users: {
-		current: string;
+	user: {
+		info: string;
 		linkToken: string;
 	};
 };
 
 export const queryKeys: QueryKeysConfig = {
-	users: {
-		current: 'CURRENT_USER',
+	user: {
+		info: 'USER_INFO',
 		linkToken: 'LINK_TOKEN',
 	},
 } as const;

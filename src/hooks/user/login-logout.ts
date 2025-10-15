@@ -2,18 +2,17 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiConfig } from '@/config/api';
 import { queryKeys } from '@/config/query-keys';
 import {
-	getCurrentUser,
 	getLinkToken,
+	getUserInfo,
 	login,
 	logout,
 	syncBankAccounts,
-	verifyAuth,
 } from '@/lib/api/user';
 
-export const useUser = () => {
+export const useUserInfo = () => {
 	const query = useQuery({
-		queryKey: [queryKeys.users.current],
-		queryFn: getCurrentUser,
+		queryKey: [queryKeys.user.info],
+		queryFn: getUserInfo,
 		staleTime: apiConfig.staleTimes.user,
 		retry: 1,
 	});
@@ -28,28 +27,13 @@ export const useUser = () => {
 	};
 };
 
-export const useVerifyAuth = () => {
-	const mutation = useMutation({
-		mutationFn: verifyAuth,
-	});
-
-	return {
-		verifyAuth: mutation.mutate,
-		verifyAuthAsync: mutation.mutateAsync,
-		isLoading: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
-		isSuccess: mutation.isSuccess,
-	};
-};
-
 export const useLogin = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
 		mutationFn: login,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.users.current] });
+			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
 		},
 	});
 
@@ -70,7 +54,7 @@ export const useLogout = () => {
 	const mutation = useMutation({
 		mutationFn: logout,
 		onSuccess: () => {
-			const allKeys = Object.values(queryKeys.users);
+			const allKeys = Object.values(queryKeys.user);
 			queryClient.invalidateQueries({ queryKey: allKeys });
 			queryClient.removeQueries({ queryKey: allKeys });
 		},
@@ -87,7 +71,7 @@ export const useLogout = () => {
 
 export const useLinkToken = (enabled = true) => {
 	const query = useQuery({
-		queryKey: [queryKeys.users.linkToken],
+		queryKey: [queryKeys.user.linkToken],
 		queryFn: getLinkToken,
 		enabled,
 		// staleTime: 5 * 60 * 1000, // 5 minutes
@@ -109,7 +93,7 @@ export const useSyncBankAccounts = () => {
 	const mutation = useMutation({
 		mutationFn: syncBankAccounts,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.users.current] });
+			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
 		},
 	});
 
