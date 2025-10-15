@@ -1,12 +1,4 @@
-import { camelCase, capitalize, lowerCase, mapKeys, snakeCase } from 'lodash';
-
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-export const keysToSnakeCase = (obj: Record<string, any>) =>
-	mapKeys(obj, (_val, key) => snakeCase(key));
-
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-export const keysToCamelCase = (obj: Record<string, any>) =>
-	mapKeys(obj, (_val, key) => camelCase(key));
+import { mapKeys } from 'lodash';
 
 // biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
 export const keysToCap = (obj: Record<string, any>) =>

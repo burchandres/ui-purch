@@ -5,12 +5,7 @@ import type {
 	UserDelete,
 	UserResponse,
 } from './types';
-import {
-	keysToCamelCase,
-	keysToCap,
-	keysToSnakeCase,
-	keysToUnCap,
-} from './utils';
+import { keysToCap } from './utils';
 
 export type LoginData = {
 	username: string;
