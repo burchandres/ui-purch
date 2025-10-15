@@ -1,21 +1,21 @@
 import type { FC } from 'react';
-import { useUser } from '@/hooks/user/login-logout';
-import { keysToCamelCase } from '@/lib/api/utils';
+import { useUserInfo } from '@/hooks/user/login-logout';
+import { keysToUnCap } from '@/lib/api/utils';
 import {
 	AccountCard,
 	type CreateAccountFormData,
 } from '../landing/user-forms/account';
 
 export const AccountSettings: FC = () => {
-	const { user } = useUser();
+	const { user } = useUserInfo();
 	return (
 		<AccountCard
 			mode="edit"
-			defaultValues={keysToCamelCase({
+			defaultValues={keysToUnCap({
 				...user,
 				income:
-					user?.income && !Number.isNaN(parseFloat(user.income))
-						? parseFloat(user.income)
+					user?.Income && !Number.isNaN(parseFloat(user.Income))
+						? parseFloat(user.Income)
 						: undefined,
 				password: undefined,
 			} as Partial<CreateAccountFormData>)}

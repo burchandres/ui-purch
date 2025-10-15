@@ -23,26 +23,7 @@ const loginSchema = z.object({
 		.max(20, { message: 'Password must be less than 20 characters' }),
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
-
-// Keep this exported for use in AccountCard
-export async function submitLogin(
-	values: LoginFormData,
-	navigate: UseNavigateResult<string>,
-) {
-	// This function is still used by AccountCard after registration
-	// You might want to refactor AccountCard to use useLogin hook instead
-	const { login } = useLogin();
-	login(values, {
-		onSuccess: () => {
-			toast.success('Successfully logged in');
-			navigate({ to: '/dashboard' });
-		},
-		onError: (error: Error) => {
-			toast.error(parseErrorMessage(error));
-		},
-	});
-}
+export type LoginFormData = z.infer<typeof loginSchema>;
 
 export const LoginCard = () => {
 	const navigate = useNavigate();
@@ -83,7 +64,6 @@ export const LoginCard = () => {
 									id="username"
 									type="text"
 									{...form.register('username')}
-									disabled={isLoading}
 								/>
 							</FormField>
 
@@ -96,12 +76,11 @@ export const LoginCard = () => {
 									id="password"
 									type="password"
 									{...form.register('password')}
-									disabled={isLoading}
 								/>
 							</FormField>
 						</div>
 						<Button className="mt-4" type="submit" disabled={isLoading}>
-							'Submit'
+							Submit
 						</Button>
 					</CardContent>
 				</Card>

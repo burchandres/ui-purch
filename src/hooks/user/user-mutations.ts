@@ -13,7 +13,7 @@ export const useRegisterUser = () => {
 	const mutation = useMutation({
 		mutationFn: registerUser,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.users.current] });
+			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
 		},
 	});
 
@@ -34,7 +34,7 @@ export const useUpdateUser = () => {
 	const mutation = useMutation({
 		mutationFn: (data: Partial<CreateUserData>) => updateUser(data),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.users.current] });
+			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
 		},
 	});
 

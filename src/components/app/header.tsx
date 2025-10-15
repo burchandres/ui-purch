@@ -48,7 +48,7 @@ export const Header: FC = () => {
 							<PopoverContent side="bottom" asChild>
 								<div className="flex flex-col w-fit gap-2 m-0">
 									<Button size="sm" className="max-w-26" variant="ghost">
-										<Link to="/settings" hash="account">
+										<Link to="/settings">
 											<p className="text-xs">Settings</p>
 										</Link>
 									</Button>

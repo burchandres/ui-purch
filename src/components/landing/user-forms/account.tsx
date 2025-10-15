@@ -15,10 +15,10 @@ import {
 } from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
+import { useLogin } from '@/hooks/user/login-logout';
 import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
 import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
-import { submitLogin } from './login';
 import { createEditSchema } from './utils';
 
 // create schema requires all fields
@@ -80,6 +80,7 @@ export const AccountCard = ({
 
 	const { register, isLoading: isRegistering } = useRegisterUser();
 	const { updateUser, isLoading: isUpdating } = useUpdateUser();
+	const { login } = useLogin();
 
 	const form = useForm<CreateAccountFormData | EditAccountFormData>({
 		resolver: zodResolver(isEditMode ? editAccountSchema : createAccountSchema),
@@ -121,14 +122,22 @@ export const AccountCard = ({
 					...createValues,
 				},
 				{
-					onSuccess: async () => {
-						toast.success('User successfully created.');
-						await submitLogin(
+					onSuccess: () => {
+						toast.success('User successfully created');
+						login(
 							{
 								username: createValues.username,
 								password: createValues.password,
 							},
-							navigate,
+							{
+								onSuccess: () => {
+									toast.success('Successfully logged in');
+									navigate({ to: '/dashboard' });
+								},
+								onError: (error: Error) => {
+									toast.error(parseErrorMessage(error));
+								},
+							},
 						);
 					},
 					onError: (error: Error) => {

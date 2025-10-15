@@ -5,7 +5,12 @@ import type {
 	UserDelete,
 	UserResponse,
 } from './types';
-import { keysToSnakeCase } from './utils';
+import {
+	keysToCamelCase,
+	keysToCap,
+	keysToSnakeCase,
+	keysToUnCap,
+} from './utils';
 
 export type LoginData = {
 	username: string;
@@ -34,13 +39,13 @@ export const getUserInfo = async (): Promise<User> => {
 // POST /user/login
 export const login = async (data: LoginData) => {
 	const form = new URLSearchParams(data);
-	const res = await api.post('/user/login', form);
+	const res = await api.get('/user/login', { params: form });
 	return res.data;
 };
 
 // POST /user/logout
 export const logout = async () => {
-	const res = await api.post('/user/logout');
+	const res = await api.get('/user/logout');
 	return res.data;
 };
 
@@ -48,7 +53,7 @@ export const logout = async () => {
 export const registerUser = async (
 	data: CreateUserData,
 ): Promise<UserResponse> => {
-	const payload = keysToSnakeCase(data);
+	const payload = keysToCap(data);
 	const res = await api.post('/user/register', payload);
 	return res.data;
 };
@@ -57,8 +62,8 @@ export const registerUser = async (
 export const updateUser = async (
 	data: Partial<CreateUserData>,
 ): Promise<UserResponse> => {
-	const payload = keysToSnakeCase(data);
-	const res = await api.patch('/user/update', payload);
+	const payload = keysToCap(data);
+	const res = await api.post('/user/update', payload);
 	return res.data;
 };
 

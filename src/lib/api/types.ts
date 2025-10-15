@@ -7,14 +7,12 @@ export type ApiError = {
 };
 
 export type User = {
-	id: string;
-	last_updated?: number | null;
-	first_name: string;
-	last_name: string;
-	username: string;
-	is_active?: boolean | null;
-	income?: string;
-	income_rate?: IncomeRate;
+	Id: string;
+	FirstName: string;
+	LastName: string;
+	Username: string;
+	Income?: string;
+	IncomeRate?: IncomeRate;
 };
 
 export type UserCreate = {
