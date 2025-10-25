@@ -29,7 +29,7 @@ const createAccountSchema = z.object({
 		.max(20, { message: 'Username must be less than 20 characters' }),
 	password: z
 		.string()
-		.min(4, { message: 'Password must be at least 4 characters' })
+		.min(8, { message: 'Password must be at least 8 characters' })
 		.max(20, { message: 'Password must be less than 20 characters' }),
 	firstName: z
 		.string()
@@ -68,7 +68,7 @@ type EditAccountFormData = z.infer<typeof editAccountSchema>;
 
 interface AccountCardProps {
 	mode?: 'create' | 'edit';
-	defaultValues?: Partial<CreateAccountFormData>;
+	defaultValues?: Partial<CreateAccountFormData> & { id?: number };
 }
 
 export const AccountCard = ({
