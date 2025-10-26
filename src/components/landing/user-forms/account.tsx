@@ -15,6 +15,7 @@ import {
 } from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
+import { appearanceConfig } from '@/config/appearance';
 import { useLogin } from '@/hooks/user/login-logout';
 import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
 import { parseErrorMessage } from '@/lib/api/utils';
@@ -153,7 +154,13 @@ export const AccountCard = ({
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-4">
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								gap: appearanceConfig.smGap,
+							}}
+						>
 							<FormField
 								id="username"
 								label="Username"
@@ -202,7 +209,13 @@ export const AccountCard = ({
 								/>
 							</FormField>
 
-							<div className="flex gap-4 items-start">
+							<div
+								style={{
+									display: 'flex',
+									gap: appearanceConfig.lgGap,
+									alignItems: 'flex-start',
+								}}
+							>
 								<FormField
 									id="income"
 									label="Income"
@@ -246,7 +259,14 @@ export const AccountCard = ({
 								</FormField>
 							</div>
 						</div>
-						<div className="flex gap-4 mt-4 items-center">
+						<div
+							style={{
+								display: 'flex',
+								marginTop: appearanceConfig.mdGap,
+								gap: appearanceConfig.mdGap,
+								alignItems: 'center',
+							}}
+						>
 							<Button type="submit" disabled={isRegistering || isUpdating}>
 								{isEditMode ? 'Update' : 'Submit'}
 							</Button>

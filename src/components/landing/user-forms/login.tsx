@@ -7,6 +7,7 @@ import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
 import { Input } from '@/components/base/input';
+import { appearanceConfig } from '@/config/appearance';
 import { useLogin } from '@/hooks/user/login-logout';
 import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
@@ -53,7 +54,13 @@ export const LoginCard = () => {
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-4">
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								gap: appearanceConfig.mdGap,
+							}}
+						>
 							<FormField
 								id="username"
 								label="Username"

@@ -7,54 +7,146 @@ export type ApiError = {
 };
 
 export type User = {
-	Id: string;
-	FirstName: string;
-	LastName: string;
-	Username: string;
-	Income?: string;
-	IncomeRate?: IncomeRate;
-};
+  id: number;
+  username: string;
+  firstName: string;
+	lastName: string;
+	income?: number;
+	incomeRate?: IncomeRate;
+}
 
-export type UserCreate = {
+export type UserRegisterRequest = Omit<User, 'id'>
+
+export type UserUpdateRequest = Partial<User>
+
+export type UserLoginRequest = {
 	username: string;
 	password: string;
-	first_name: string;
-	last_name: string;
-	income?: number;
-	income_rate?: IncomeRate;
 };
 
-export type UserUpdate = {
-	first_name?: string;
-	last_name?: string;
-	username?: string;
-	password?: string;
-	income_rate?: IncomeRate;
-	income?: number;
-};
-
-export type UserResponse = {
-	id: string;
-	username: string;
-	first_name: string;
-	last_name: string;
-	income?: string;
-	income_rate?: IncomeRate;
-};
+export type UserDeleteResponse = Omit<User, 'id' | 'income'| 'incomeRate'>
 
 export type LinkTokenResponse = {
-	link_token: string;
+	linkToken: string;
 	expiration: string;
-	request_id: string;
+	requestId: string;
 };
 
-export type LoginCredentials = {
-	username: string;
-	password: string;
+type CamelToSnakeCase<S extends string> = S extends `${infer First}${infer Rest}`
+  ? First extends Uppercase<First>
+    ? `_${Lowercase<First>}${CamelToSnakeCase<Rest>}`
+    : `${First}${CamelToSnakeCase<Rest>}`
+  : S;
+
+type CamelToSnake<T> = {
+  [K in keyof T as CamelToSnakeCase<K & string>]: T[K] extends object
+    ? T[K] extends Array<infer U>
+      ? U extends object
+        ? Array<CamelToSnake<U>>
+        : T[K]
+      : CamelToSnake<T[K]>
+    : T[K];
 };
 
-export type UserDelete = {
-	username: string;
-	first_name: string;
-	last_name: string;
+export function camelToSnake<T extends Record<string, any>>(obj: T): CamelToSnake<T> {
+  if (obj === null || typeof obj !== 'object') {
+    return obj as any;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => camelToSnake(item)) as any;
+  }
+
+  const result: any = {};
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const snakeKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+      const value = obj[key];
+
+      result[snakeKey] = typeof value === 'object' && value !== null
+        ? camelToSnake(value)
+        : value;
+    }
+  }
+
+  return result;
+}
+
+type PascalToCamelCase<S extends string> = S extends `${infer First}${infer Rest}`
+  ? `${Lowercase<First>}${Rest}`
+  : S;
+
+export type PascalToCamel<T> = {
+  [K in keyof T as PascalToCamelCase<K & string>]: T[K] extends object
+    ? T[K] extends Array<infer U>
+      ? U extends object
+        ? Array<PascalToCamel<U>>
+        : T[K]
+      : PascalToCamel<T[K]>
+    : T[K];
 };
+
+export function pascalToCamel<T extends Record<string, any>>(obj: T): PascalToCamel<T> {
+  if (obj === null || typeof obj !== 'object') {
+    return obj as any;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => pascalToCamel(item)) as any;
+  }
+
+  const result: any = {};
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const camelKey = key.charAt(0).toLowerCase() + key.slice(1);
+      const value = obj[key];
+
+      result[camelKey] = typeof value === 'object' && value !== null
+        ? pascalToCamel(value)
+        : value;
+    }
+  }
+
+  return result;
+}
+
+type CamelToPascalCase<S extends string> = S extends `${infer First}${infer Rest}`
+  ? `${Uppercase<First>}${Rest}`
+  : S;
+
+export type CamelToPascal<T> = {
+  [K in keyof T as CamelToPascalCase<K & string>]: T[K] extends object
+    ? T[K] extends Array<infer U>
+      ? U extends object
+        ? Array<CamelToPascal<U>>
+        : T[K]
+      : CamelToPascal<T[K]>
+    : T[K];
+};
+
+export function camelToPascal<T extends Record<string, any>>(obj: T): CamelToPascal<T> {
+  if (obj === null || typeof obj !== 'object') {
+    return obj as any;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => camelToPascal(item)) as any;
+  }
+
+  const result: any = {};
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const pascalKey = key.charAt(0).toUpperCase() + key.slice(1);
+      const value = obj[key];
+
+      result[pascalKey] = typeof value === 'object' && value !== null
+        ? camelToPascal(value)
+        : value;
+    }
+  }
+
+  return result;
+}

@@ -1,6 +1,5 @@
-import type { FC } from 'react';
+import { type FC, useEffect } from 'react';
 import { useUserInfo } from '@/hooks/user/login-logout';
-import { keysToUnCap } from '@/lib/api/utils';
 import {
 	AccountCard,
 	type CreateAccountFormData,
@@ -8,17 +7,24 @@ import {
 
 export const AccountSettings: FC = () => {
 	const { user } = useUserInfo();
+	useEffect(() => {
+		console.log('user', user);
+	}, [user]);
+	console.log;
 	return (
 		<AccountCard
 			mode="edit"
-			defaultValues={keysToUnCap({
-				...user,
-				income:
-					user?.Income && !Number.isNaN(parseFloat(user.Income))
-						? parseFloat(user.Income)
-						: undefined,
-				password: undefined,
-			} as Partial<CreateAccountFormData>)}
+			defaultValues={
+				{
+					...user,
+					// income:
+					// 	user?.income && !Number.isNaN(parseFloat(user.income))
+					// 		? parseFloat(user.income)
+					// 		: undefined,
+					password: undefined,
+					// id: user?.id,
+				} as Partial<CreateAccountFormData>
+			}
 		/>
 	);
 };

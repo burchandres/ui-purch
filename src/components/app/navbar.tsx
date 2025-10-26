@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import { appearanceConfig } from '@/config/appearance';
 import { pagesConfig } from '@/config/pages';
 import { Separator } from '../base/separator';
 import {
@@ -17,13 +18,26 @@ export function NavBar() {
 			<div className="mx-4">
 				<Separator className="w-8" />
 			</div>
-			<div className="flex flex-col gap-2 m-3">
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					gap: appearanceConfig.smGap,
+					margin: appearanceConfig.smGap,
+				}}
+			>
 				{Object.entries(pagesConfig.pages)
 					.filter(([page, _]) => page !== 'landing')
 					.map(([page, config]) => (
 						<Link key={page} to={config.url}>
 							<SheetClose className="w-full">
-								<div className="flex items-center gap-3">
+								<div
+									style={{
+										display: 'flex',
+										alignItems: 'center',
+										gap: appearanceConfig.smGap,
+									}}
+								>
 									{config.icon && <config.icon size={16} />}
 									<span className="navbar-item">{config.display}</span>
 								</div>
