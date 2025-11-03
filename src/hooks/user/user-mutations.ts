@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/config/query-keys';
 import type { UserUpdateRequest } from '@/lib/api/types';
-import { deleteUser, registerUser, updateUser } from '@/lib/api/user';
+import { registerUser, updateUser } from '@/lib/api/user';
 
 export const useRegisterUser = () => {
 	const queryClient = useQueryClient();
@@ -28,7 +28,7 @@ export const useUpdateUser = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
-		mutationFn: (data: Partial<UserUpdateRequest>) => updateUser(data),
+		mutationFn: (data: UserUpdateRequest) => updateUser(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
 		},
@@ -42,25 +42,5 @@ export const useUpdateUser = () => {
 		error: mutation.error,
 		isSuccess: mutation.isSuccess,
 		data: mutation.data,
-	};
-};
-
-export const useDeleteUser = () => {
-	const queryClient = useQueryClient();
-
-	const mutation = useMutation({
-		mutationFn: deleteUser,
-		onSuccess: () => {
-			queryClient.clear();
-		},
-	});
-
-	return {
-		deleteUser: mutation.mutate,
-		deleteUserAsync: mutation.mutateAsync,
-		isLoading: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
-		isSuccess: mutation.isSuccess,
 	};
 };

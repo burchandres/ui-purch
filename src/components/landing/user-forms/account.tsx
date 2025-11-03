@@ -102,10 +102,16 @@ export const AccountCard = ({
 	) => {
 		if (isEditMode) {
 			// filter out undefined values to only send changed fields
+			// special handling: exclude password if undefined, but include all other fields
 			const updates = Object.fromEntries(
-				Object.entries(values).filter(
-					([_, value]) => value !== undefined && value !== '',
-				),
+				Object.entries(values).filter(([key, value]) => {
+					// Exclude password only if it's undefined
+					if (key === 'password') {
+						return value !== undefined && value !== '';
+					}
+					// Include all other fields regardless of value
+					return value !== undefined && value !== '';
+				}),
 			);
 
 			updateUser(updates, {

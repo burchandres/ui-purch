@@ -1,13 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiConfig } from '@/config/api';
 import { queryKeys } from '@/config/query-keys';
-import {
-	getLinkToken,
-	getUserInfo,
-	login,
-	logout,
-	syncBankAccounts,
-} from '@/lib/api/user';
+import { getLinkToken, getUserInfo, login, logout } from '@/lib/api/user';
 
 export const useUserInfo = () => {
 	const query = useQuery({
@@ -78,31 +72,11 @@ export const useLinkToken = (enabled = true) => {
 	});
 
 	return {
-		linkToken: query.data?.link_token,
+		linkToken: query.data?.linkToken,
 		linkTokenData: query.data,
 		isLoading: query.isLoading,
 		isError: query.isError,
 		error: query.error,
 		refetch: query.refetch,
-	};
-};
-
-export const useSyncBankAccounts = () => {
-	const queryClient = useQueryClient();
-
-	const mutation = useMutation({
-		mutationFn: syncBankAccounts,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
-		},
-	});
-
-	return {
-		syncBankAccounts: mutation.mutate,
-		syncBankAccountsAsync: mutation.mutateAsync,
-		isLoading: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
-		isSuccess: mutation.isSuccess,
 	};
 };
