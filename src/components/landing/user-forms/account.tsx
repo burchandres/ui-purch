@@ -16,6 +16,7 @@ import {
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
 import { appearanceConfig } from '@/config/appearance';
+import type { IncomeRate } from '@/config/inputs';
 import { useLogin } from '@/hooks/user/login-logout';
 import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
 import { parseErrorMessage } from '@/lib/api/utils';
@@ -123,18 +124,18 @@ export const AccountCard = ({
 				},
 			});
 		} else {
-			const createValues = values as CreateAccountFormData;
 			register(
 				{
-					...createValues,
+					...values,
+					incomeRate: values.incomeRate as IncomeRate,
 				},
 				{
 					onSuccess: () => {
 						toast.success('User successfully created');
 						login(
 							{
-								username: createValues.username,
-								password: createValues.password,
+								username: values.username,
+								password: values.password as string,
 							},
 							{
 								onSuccess: () => {
