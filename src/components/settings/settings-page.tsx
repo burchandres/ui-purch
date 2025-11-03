@@ -4,6 +4,7 @@ import { appearanceConfig } from '@/config/appearance';
 import { Separator } from '../base/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
 import { AccountSettings } from './account-settings';
+import { AppearanceSettings } from './appearance-settings';
 
 type SectionConfig = {
 	display?: string;
@@ -20,7 +21,7 @@ const sections: Record<string, SectionConfig> = {
 	appearance: {
 		display: 'Appearance',
 		icon: Palette,
-		component: <p>🎨</p>,
+		component: <AppearanceSettings />,
 	},
 	poo: {
 		display: 'Poop monster',
