@@ -204,7 +204,7 @@ landing-header {
 	background-color: var(--color-slate-900);
 }
 button:hover {
-	border-color: var(--slate-200);
+	/* border-color: var(--slate-200); */
 }
 button:focus,
 button:focus-visible {

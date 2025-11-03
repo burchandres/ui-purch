@@ -1,24 +1,30 @@
-import type { FC } from 'react';
-import { useUser } from '@/hooks/user/login-logout';
-import { keysToCamelCase } from '@/lib/api/utils';
+import { type FC, useEffect } from 'react';
+import { useUserInfo } from '@/hooks/user/login-logout';
 import {
 	AccountCard,
 	type CreateAccountFormData,
 } from '../landing/user-forms/account';
 
 export const AccountSettings: FC = () => {
-	const { user } = useUser();
+	const { user } = useUserInfo();
+	useEffect(() => {
+		console.log('user', user);
+	}, [user]);
+	console.log;
 	return (
 		<AccountCard
 			mode="edit"
-			defaultValues={keysToCamelCase({
-				...user,
-				income:
-					user?.income && !Number.isNaN(parseFloat(user.income))
-						? parseFloat(user.income)
-						: undefined,
-				password: undefined,
-			} as Partial<CreateAccountFormData>)}
+			defaultValues={
+				{
+					...user,
+					// income:
+					// 	user?.income && !Number.isNaN(parseFloat(user.income))
+					// 		? parseFloat(user.income)
+					// 		: undefined,
+					password: undefined,
+					// id: user?.id,
+				} as Partial<CreateAccountFormData>
+			}
 		/>
 	);
 };

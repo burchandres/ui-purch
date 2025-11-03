@@ -15,10 +15,12 @@ import {
 } from '@/components/base/tooltip';
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
+import { appearanceConfig } from '@/config/appearance';
+import type { IncomeRate } from '@/config/inputs';
+import { useLogin } from '@/hooks/user/login-logout';
 import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
 import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
-import { submitLogin } from './login';
 import { createEditSchema } from './utils';
 
 // create schema requires all fields
@@ -29,7 +31,7 @@ const createAccountSchema = z.object({
 		.max(20, { message: 'Username must be less than 20 characters' }),
 	password: z
 		.string()
-		.min(4, { message: 'Password must be at least 4 characters' })
+		.min(8, { message: 'Password must be at least 8 characters' })
 		.max(20, { message: 'Password must be less than 20 characters' }),
 	firstName: z
 		.string()
@@ -68,7 +70,7 @@ type EditAccountFormData = z.infer<typeof editAccountSchema>;
 
 interface AccountCardProps {
 	mode?: 'create' | 'edit';
-	defaultValues?: Partial<CreateAccountFormData>;
+	defaultValues?: Partial<CreateAccountFormData> & { id?: number };
 }
 
 export const AccountCard = ({
@@ -80,6 +82,7 @@ export const AccountCard = ({
 
 	const { register, isLoading: isRegistering } = useRegisterUser();
 	const { updateUser, isLoading: isUpdating } = useUpdateUser();
+	const { login } = useLogin();
 
 	const form = useForm<CreateAccountFormData | EditAccountFormData>({
 		resolver: zodResolver(isEditMode ? editAccountSchema : createAccountSchema),
@@ -100,10 +103,16 @@ export const AccountCard = ({
 	) => {
 		if (isEditMode) {
 			// filter out undefined values to only send changed fields
+			// special handling: exclude password if undefined, but include all other fields
 			const updates = Object.fromEntries(
-				Object.entries(values).filter(
-					([_, value]) => value !== undefined && value !== '',
-				),
+				Object.entries(values).filter(([key, value]) => {
+					// Exclude password only if it's undefined
+					if (key === 'password') {
+						return value !== undefined && value !== '';
+					}
+					// Include all other fields regardless of value
+					return value !== undefined && value !== '';
+				}),
 			);
 
 			updateUser(updates, {
@@ -115,20 +124,28 @@ export const AccountCard = ({
 				},
 			});
 		} else {
-			const createValues = values as CreateAccountFormData;
 			register(
 				{
-					...createValues,
+					...values,
+					incomeRate: values.incomeRate as IncomeRate,
 				},
 				{
-					onSuccess: async () => {
-						toast.success('User successfully created.');
-						await submitLogin(
+					onSuccess: () => {
+						toast.success('User successfully created');
+						login(
 							{
-								username: createValues.username,
-								password: createValues.password,
+								username: values.username,
+								password: values.password as string,
 							},
-							navigate,
+							{
+								onSuccess: () => {
+									toast.success('Successfully logged in');
+									navigate({ to: '/dashboard' });
+								},
+								onError: (error: Error) => {
+									toast.error(parseErrorMessage(error));
+								},
+							},
 						);
 					},
 					onError: (error: Error) => {
@@ -144,7 +161,13 @@ export const AccountCard = ({
 			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
 				<Card>
 					<CardContent>
-						<div className="flex flex-col gap-4">
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								gap: appearanceConfig.smGap,
+							}}
+						>
 							<FormField
 								id="username"
 								label="Username"
@@ -193,7 +216,13 @@ export const AccountCard = ({
 								/>
 							</FormField>
 
-							<div className="flex gap-4 items-start">
+							<div
+								style={{
+									display: 'flex',
+									gap: appearanceConfig.lgGap,
+									alignItems: 'flex-start',
+								}}
+							>
 								<FormField
 									id="income"
 									label="Income"
@@ -237,7 +266,14 @@ export const AccountCard = ({
 								</FormField>
 							</div>
 						</div>
-						<div className="flex gap-4 mt-4 items-center">
+						<div
+							style={{
+								display: 'flex',
+								marginTop: appearanceConfig.mdGap,
+								gap: appearanceConfig.mdGap,
+								alignItems: 'center',
+							}}
+						>
 							<Button type="submit" disabled={isRegistering || isUpdating}>
 								{isEditMode ? 'Update' : 'Submit'}
 							</Button>

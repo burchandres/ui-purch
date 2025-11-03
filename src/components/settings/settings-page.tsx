@@ -1,62 +1,85 @@
-import { AppWindow, type LucideIcon, SquareUser, Toilet } from 'lucide-react';
-import type { FC } from 'react';
+import { type LucideIcon, Palette, SquareUser, Toilet } from 'lucide-react';
+import type { FC, ReactNode } from 'react';
+import { appearanceConfig } from '@/config/appearance';
+import { Separator } from '../base/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
 import { AccountSettings } from './account-settings';
+import { AppearanceSettings } from './appearance-settings';
 
-type TabConfig = {
-	id: string;
+type SectionConfig = {
 	display?: string;
 	icon: LucideIcon;
-	component: FC;
+	component: ReactNode;
 };
 
-const tabs: TabConfig[] = [
-	{
-		id: 'account',
+const sections: Record<string, SectionConfig> = {
+	account: {
 		display: 'Account',
 		icon: SquareUser,
-		component: AccountSettings,
+		component: <AccountSettings />,
 	},
-	{
-		id: 'application',
-		display: 'Application',
-		icon: AppWindow,
-		component: AccountSettings,
+	appearance: {
+		display: 'Appearance',
+		icon: Palette,
+		component: <AppearanceSettings />,
 	},
-	{
-		id: 'poo',
+	poo: {
 		display: 'Poop monster',
 		icon: Toilet,
-		component: AccountSettings,
+		component: <p>🍈</p>,
 	},
-];
+};
 
 export const SettingsPage: FC = () => {
 	return (
-		<div>
-			<div className=" flex w-full justify-center mt-5 pb-10">
-				<Tabs defaultValue="account">
-					<div className="mb-2">
-						<TabsList>
-							{tabs.map((tab) => (
-								<TabsTrigger key={tab.id} value={tab.id}>
-									<div className="flex gap-2 items-center">
-										<tab.icon />
-										{tab.display}
-									</div>
-								</TabsTrigger>
-							))}
-						</TabsList>
-					</div>
-					<div className="min-w-sm p-0">
-						{tabs.map((tab) => (
-							<TabsContent key={tab.id} value={tab.id}>
-								<tab.component />
-							</TabsContent>
+		<div style={{ display: 'flex', flexDirection: 'row' }}>
+			<Tabs
+				defaultValue="account"
+				orientation="vertical"
+				className="flex flex-row min-h-max"
+			>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: appearanceConfig.mdGap,
+						padding: appearanceConfig.lgGap,
+					}}
+				>
+					<TabsList>
+						{Object.entries(sections).map(([key, section]) => (
+							<TabsTrigger
+								key={key}
+								value={key}
+								style={{
+									textAlign: 'left',
+									justifyContent: 'flex-start',
+								}}
+							>
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyItems: 'flex-start',
+										alignItems: 'center',
+										gap: appearanceConfig.smGap,
+									}}
+								>
+									<section.icon /> {section.display}
+								</div>
+							</TabsTrigger>
 						))}
-					</div>
-				</Tabs>
-			</div>
+					</TabsList>
+				</div>
+				<Separator style={{ height: 'auto' }} orientation="vertical" />
+				<div style={{ margin: appearanceConfig.lgGap }}>
+					{Object.entries(sections).map(([key, section]) => (
+						<TabsContent key={key} value={key}>
+							{section.component}
+						</TabsContent>
+					))}
+				</div>
+			</Tabs>
 		</div>
 	);
 };
