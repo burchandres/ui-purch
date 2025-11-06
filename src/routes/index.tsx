@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { checkIfLoggedIn } from '@/lib/api/user';
+import { checkIfLoggedIn } from '@/lib/api/user/endpoints';
 
 export const Route = createFileRoute('/')({
 	loader: async () => {

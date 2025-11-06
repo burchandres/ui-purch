@@ -1,7 +1,7 @@
 import { redirect } from '@tanstack/react-router';
 import { apiConfig } from '@/config/api';
 import { queryKeys } from '@/config/query-keys';
-import { getUserInfo } from '@/lib/api/user';
+import { getUserInfo } from '@/lib/api/user/endpoints';
 import { queryClient } from '@/lib/queryClient';
 
 export async function requireAuth() {
