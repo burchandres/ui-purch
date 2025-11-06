@@ -9,13 +9,14 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/base/dialog';
-import { logout } from '@/lib/api/user/endpoints';
+import { useLogout } from '@/hooks/user/login-logout';
 
 export const LogOutButtonDialog = () => {
 	const navigate = useNavigate();
+	const { logout } = useLogout();
 
 	async function onLogout() {
-		await logout();
+		logout();
 		navigate({ to: '/landing' });
 	}
 

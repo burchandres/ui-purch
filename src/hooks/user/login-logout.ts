@@ -32,7 +32,11 @@ export const useLogin = () => {
 	const mutation = useMutation({
 		mutationFn: login,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
+			const userKeys = Object.values(queryKeys.user);
+			const budgetKeys = Object.values(queryKeys.budget);
+			queryClient.invalidateQueries({
+				queryKey: [...userKeys, ...budgetKeys],
+			});
 		},
 	});
 
@@ -53,9 +57,12 @@ export const useLogout = () => {
 	const mutation = useMutation({
 		mutationFn: logout,
 		onSuccess: () => {
-			const allKeys = Object.values(queryKeys.user);
-			queryClient.invalidateQueries({ queryKey: allKeys });
-			queryClient.removeQueries({ queryKey: allKeys });
+			// console.log('successfully logged out');
+			// const userKeys = Object.values(queryKeys.user);
+			// const budgetKeys = Object.values(queryKeys.budget);
+			// queryClient.invalidateQueries({ queryKey: [...userKeys, ...budgetKeys] });
+			// queryClient.removeQueries({ queryKey: [...userKeys, ...budgetKeys] });
+			queryClient.clear();
 		},
 	});
 

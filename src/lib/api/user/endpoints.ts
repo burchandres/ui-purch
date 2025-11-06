@@ -10,7 +10,6 @@ import type {
 // GET /user/info
 export const getUserInfo = async (): Promise<User> => {
 	const res = await api.get('/user/info');
-	console.log(' user info res', res);
 	return res.data as User;
 };
 
