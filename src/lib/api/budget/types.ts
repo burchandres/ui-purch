@@ -12,6 +12,16 @@ export type Transaction = {
 	pending: boolean;
 };
 
+export type TransactionUpdateRequest = {
+	categoryLabel?: string;
+	authorizedDate?: Time;
+	settledDate?: Time;
+	merchant?: string;
+	amount?: number;
+	currencyCode?: string;
+	pending?: boolean;
+};
+
 export type Category = {
 	id: string;
 	userId: string;
