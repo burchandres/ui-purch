@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiConfig } from '@/config/api';
-import { camelToSnake, snakeToCamel } from './types';
+import { camelToSnake, snakeToCamel } from './utils';
 
 export const api = axios.create({
 	baseURL: apiConfig.purchBaseUrl,

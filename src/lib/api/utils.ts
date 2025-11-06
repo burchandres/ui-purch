@@ -1,21 +1,3 @@
-import { camelCase, mapKeys, snakeCase } from 'lodash';
-
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-export const keysToSnakeCase = (obj: Record<string, any>) =>
-	mapKeys(obj, (_val, key) => snakeCase(key));
-
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-export const keysToCamelCase = (obj: Record<string, any>) =>
-	mapKeys(obj, (_val, key) => camelCase(key));
-
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-export const keysToCap = (obj: Record<string, any>) =>
-	mapKeys(obj, (_val, key) => `${key.charAt(0).toUpperCase()}${key.slice(1)}`);
-
-// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
-export const keysToUnCap = (obj: Record<string, any>) =>
-	mapKeys(obj, (_val, key) => `${key.charAt(0).toLowerCase()}${key.slice(1)}`);
-
 // tries to pull useful messages out of different error messages
 // biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
 export const parseErrorMessage = (error: any): string => {
@@ -42,3 +24,102 @@ export const parseErrorMessage = (error: any): string => {
 	};
 	return messageMap[message] || message;
 };
+
+type CamelToSnakeCase<S extends string> =
+	S extends `${infer First}${infer Rest}`
+		? First extends Uppercase<First>
+			? `_${Lowercase<First>}${CamelToSnakeCase<Rest>}`
+			: `${First}${CamelToSnakeCase<Rest>}`
+		: S;
+
+type CamelToSnake<T> = {
+	[K in keyof T as CamelToSnakeCase<K & string>]: T[K] extends object
+		? T[K] extends Array<infer U>
+			? U extends object
+				? Array<CamelToSnake<U>>
+				: T[K]
+			: CamelToSnake<T[K]>
+		: T[K];
+};
+
+// biome-ignore lint/suspicious/noExplicitAny: this should handle many data types
+export function camelToSnake<T extends Record<string, any>>(
+	obj: T,
+): CamelToSnake<T> {
+	if (obj === null || typeof obj !== 'object') {
+		return obj;
+	}
+
+	if (Array.isArray(obj)) {
+		// biome-ignore lint/suspicious/noExplicitAny: this should handle many data types
+		return obj.map((item) => camelToSnake(item)) as any;
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: this should handle many data types
+	const result: any = {};
+
+	for (const key in obj) {
+		if (Object.hasOwn(obj, key)) {
+			const snakeKey = key.replace(
+				/[A-Z]/g,
+				(letter) => `_${letter.toLowerCase()}`,
+			);
+			const value = obj[key];
+
+			result[snakeKey] =
+				typeof value === 'object' && value !== null
+					? camelToSnake(value)
+					: value;
+		}
+	}
+
+	return result;
+}
+
+type SnakeToCamelCase<S extends string> =
+	S extends `${infer First}_${infer Second}${infer Rest}`
+		? `${First}${Uppercase<Second>}${SnakeToCamelCase<Rest>}`
+		: S;
+
+type SnakeToCamel<T> = {
+	[K in keyof T as SnakeToCamelCase<K & string>]: T[K] extends object
+		? T[K] extends Array<infer U>
+			? U extends object
+				? Array<SnakeToCamel<U>>
+				: T[K]
+			: SnakeToCamel<T[K]>
+		: T[K];
+};
+
+// biome-ignore lint/suspicious/noExplicitAny: this should handle many data types
+export function snakeToCamel<T extends Record<string, any>>(
+	obj: T,
+): SnakeToCamel<T> {
+	if (obj === null || typeof obj !== 'object') {
+		return obj;
+	}
+
+	if (Array.isArray(obj)) {
+		// biome-ignore lint/suspicious/noExplicitAny: this should handle many data types
+		return obj.map((item) => snakeToCamel(item)) as any;
+	}
+
+	// biome-ignore lint/suspicious/noExplicitAny: this should handle many data types
+	const result: any = {};
+
+	for (const key in obj) {
+		if (Object.hasOwn(obj, key)) {
+			const camelKey = key.replace(/_([a-z])/g, (_, letter) =>
+				letter.toUpperCase(),
+			);
+			const value = obj[key];
+
+			result[camelKey] =
+				typeof value === 'object' && value !== null
+					? snakeToCamel(value)
+					: value;
+		}
+	}
+
+	return result;
+}
