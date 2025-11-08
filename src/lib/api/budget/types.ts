@@ -1,26 +1,24 @@
-type Time = string;
-
 export type Transaction = {
 	id: string;
 	accountId: string;
 	categoryLabel?: string;
-	authorizedDate: Time;
-	settledDate?: Time;
+	authorizedDate: Date;
+	settledDate?: Date;
 	merchant?: string;
 	amount: number;
 	currencyCode?: string;
 	pending: boolean;
 };
 
-export type TransactionUpdateRequest = {
-	categoryLabel?: string;
-	authorizedDate?: Time;
-	settledDate?: Time;
-	merchant?: string;
-	amount?: number;
-	currencyCode?: string;
-	pending?: boolean;
+export type TransactionResponse = Omit<
+	Transaction,
+	'authorizedDate' | 'settledDate'
+> & {
+	authorizedDate?: string;
+	settledDate?: string;
 };
+
+export type TransactionUpdateRequest = Partial<TransactionResponse>;
 
 export type Category = {
 	id: string;
@@ -52,32 +50,30 @@ export type InvestmentSubType = {
 	_401k: '401k';
 };
 
-type DepositoryAccount = {
+export type AccountSubType =
+	| DepositoryAccount
+	| CreditSubType
+	| InvestmentSubType;
+
+type BaseAccount = {
 	id: string;
 	itemId: string;
 	name: string;
 	availableBalance?: number;
 	currentBalance?: number;
+};
+
+type DepositoryAccount = BaseAccount & {
 	type: 'depository';
 	subType?: DepositorySubType;
 };
 
-type CreditAccount = {
-	id: string;
-	itemId: string;
-	name: string;
-	availableBalance?: number;
-	currentBalance?: number;
+type CreditAccount = BaseAccount & {
 	type: 'credit';
 	subType?: CreditSubType;
 };
 
-type InvestmentAccount = {
-	id: string;
-	itemId: string;
-	name: string;
-	availableBalance?: number;
-	currentBalance?: number;
+type InvestmentAccount = BaseAccount & {
 	type: 'investment';
 	subType?: InvestmentSubType;
 };

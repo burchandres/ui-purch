@@ -1,4 +1,7 @@
 // tries to pull useful messages out of different error messages
+
+import type { Transaction, TransactionResponse } from './budget/types';
+
 // biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
 export const parseErrorMessage = (error: any): string => {
 	// biome-ignore lint/suspicious/noExplicitAny: this function purposefully takes any type
@@ -123,3 +126,13 @@ export function snakeToCamel<T extends Record<string, any>>(
 
 	return result;
 }
+
+export const parseTransaction = (data: TransactionResponse): Transaction => {
+	return {
+		...data,
+		authorizedDate: data.authorizedDate
+			? new Date(data.authorizedDate)
+			: new Date(),
+		settledDate: data.settledDate ? new Date(data.settledDate) : undefined,
+	};
+};

@@ -1,9 +1,11 @@
 import { api } from '../api';
+import { parseTransaction } from '../utils';
 import type {
 	Account,
 	Category,
 	Item,
 	Transaction,
+	TransactionResponse,
 	TransactionUpdateRequest,
 } from './types';
 
@@ -12,13 +14,13 @@ import type {
 // GET /budget/transactions
 export const getTransactions = async (): Promise<Transaction[]> => {
 	const res = await api.get('/budget/transactions');
-	return res.data as Transaction[];
+	return (res.data as TransactionResponse[]).map(parseTransaction);
 };
 
 // GET /budget/transactions/:id
 export const getTransaction = async (id: string): Promise<Transaction> => {
 	const res = await api.get(`/budget/transactions/${id}`);
-	return res.data as Transaction;
+	return parseTransaction(res.data as TransactionResponse);
 };
 
 // PATCH /budget/transactions/:id
