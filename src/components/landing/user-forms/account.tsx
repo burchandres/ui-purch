@@ -13,8 +13,8 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from '@/components/base/tooltip';
-import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
-import { MoneyInput } from '@/components/inputs/money-input';
+import { IncomeRateSelect } from '@/components/common/income-rate-select';
+import { MoneyInput } from '@/components/common/money-input';
 import { appearanceConfig } from '@/config/appearance';
 import type { IncomeRate } from '@/config/inputs';
 import { useLogin } from '@/hooks/user/login-logout';

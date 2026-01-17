@@ -7,9 +7,15 @@ import { queryClient } from '@/lib/queryClient';
 export const Route = createRootRoute({
 	component: () => (
 		<QueryClientProvider client={queryClient}>
-			<Header />
-			<Outlet />
-			<Toaster />
+			<div
+				style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}
+			>
+				<Header />
+				<div style={{ flex: 1, overflow: 'hidden' }}>
+					<Outlet />
+				</div>
+				<Toaster />
+			</div>
 		</QueryClientProvider>
 	),
 });

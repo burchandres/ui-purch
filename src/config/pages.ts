@@ -1,4 +1,4 @@
-import { House, type LucideIcon, Settings } from 'lucide-react';
+import { House, Landmark, type LucideIcon, Settings } from 'lucide-react';
 
 export type PageConfig = {
 	url: string;
@@ -21,6 +21,11 @@ export const pagesConfig: PagesConfig = {
 			url: 'dashboard',
 			display: 'Dashboard',
 			icon: House,
+		},
+		accounts: {
+			url: 'accounts',
+			display: 'Accounts',
+			icon: Landmark,
 		},
 		settings: {
 			url: 'settings',
