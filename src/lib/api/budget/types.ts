@@ -36,19 +36,11 @@ export type Item = {
 	transactionCursor: string;
 };
 
-export type DepositorySubType = {
-	Checking: 'checking';
-	Savings: 'savings';
-};
+export type DepositorySubType = 'Checking' | 'Savings';
 
-export type CreditSubType = {
-	CreditCard: 'credit card';
-};
+export type CreditSubType = 'Credit Card';
 
-export type InvestmentSubType = {
-	IRA: 'ira';
-	_401k: '401k';
-};
+export type InvestmentSubType = 'IRA' | '401k';
 
 export type AccountSubType =
 	| DepositoryAccount
@@ -64,17 +56,17 @@ type BaseAccount = {
 };
 
 type DepositoryAccount = BaseAccount & {
-	type: 'depository';
+	type: 'Depository';
 	subType?: DepositorySubType;
 };
 
 type CreditAccount = BaseAccount & {
-	type: 'credit';
+	type: 'Credit';
 	subType?: CreditSubType;
 };
 
 type InvestmentAccount = BaseAccount & {
-	type: 'investment';
+	type: 'Investment';
 	subType?: InvestmentSubType;
 };
 
