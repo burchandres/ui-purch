@@ -14,7 +14,9 @@ import type {
 // GET /budget/transactions
 export const getTransactions = async (): Promise<Transaction[]> => {
 	const res = await api.get('/budget/transactions');
-	return (res.data as TransactionResponse[]).map(parseTransaction);
+	return res.data
+		? (res.data as TransactionResponse[]).map(parseTransaction)
+		: [];
 };
 
 // GET /budget/transactions/:id
