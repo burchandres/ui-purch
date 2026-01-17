@@ -7,13 +7,16 @@ import {
 	SheetContent,
 	SheetFooter,
 	SheetHeader,
+	SheetTitle,
 } from '../base/sheet';
 
 export function NavBar() {
 	return (
 		<SheetContent side="left">
 			<SheetHeader>
-				<span className="logo-text font-bold text-xl ml-2">Purch</span>
+				<SheetTitle className="logo-text font-bold text-xl ml-2">
+					Purch
+				</SheetTitle>
 			</SheetHeader>
 			<div className="mx-4">
 				<Separator className="w-8" />

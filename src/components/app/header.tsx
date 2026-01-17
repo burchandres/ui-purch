@@ -7,8 +7,8 @@ import { Button } from '../base/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../base/popover';
 import { Sheet, SheetTrigger } from '../base/sheet';
 import { PurchLogoSquare } from '../icons/purch-logo';
+import { NavBar } from './app-nav';
 import { LogOutButtonDialog } from './log-out-button';
-import { NavBar } from './navbar';
 
 export const Header: FC = () => {
 	const fullPath = useLocation().pathname;
@@ -21,7 +21,6 @@ export const Header: FC = () => {
 	return (
 		<Sheet>
 			<header className="sticky top-0 z-20 flex-shrink-0">
-				{/* Add flex-shrink-0 */}
 				<div className="min-h-14 p-2 pl-3 pr-5 bg-background w-full border flex justify-between items-center">
 					<div
 						style={{
