@@ -47,6 +47,7 @@
 	--muted-foreground: oklch(0.554 0.046 257.417);
 	--accent: var(--secondary);
 	--accent-foreground: var(--slate-500);
+	--panel: var(blue);
 	--destructive: oklch(0.577 0.245 27.325);
 	--border: var(--blue-200);
 	--input: var(--blue-200);
@@ -142,6 +143,7 @@
 	--color-chart-3: var(--chart-3);
 	--color-chart-4: var(--chart-4);
 	--color-chart-5: var(--chart-5);
+	--color-panel: var(--color-gray-100);
 	--color-sidebar: var(--sidebar);
 	--color-sidebar-foreground: var(--sidebar-foreground);
 	--color-sidebar-primary: var(--sidebar-primary);
