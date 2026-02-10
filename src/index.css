@@ -3,7 +3,7 @@
 
 /* @custom-variant dark (&:is(.dark *)); */
 
-/* Common blue shades used repeatedly */
+/* common blue shades */
 :root {
 	--blue-100: oklch(0.984 0.003 247.858);
 	--blue-200: oklch(0.929 0.013 255.508);
@@ -158,9 +158,7 @@
 	background-color: black;
 }
 
-/* f1f5f9  f8fafc (white)
-
-/* Shared styles */
+/* shared styles */
 html {
 	overscroll-behavior-y: none;
 }
@@ -205,9 +203,6 @@ landing-header {
 .dark button {
 	background-color: var(--color-slate-900);
 }
-button:hover {
-	/* border-color: var(--slate-200); */
-}
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
@@ -226,4 +221,35 @@ button:focus-visible {
 [data-slot="select-trigger"] {
 	font-size: 0.9rem; /* text-sm equivalent */
 	font-weight: 400; /* font-normal equivalent */
+}
+
+.dashboard-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 1rem;
+	width: 100%;
+}
+
+/* for larger screens, allow up to 2 columns */
+@media (min-width: 1024px) {
+	.dashboard-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+}
+
+/* on mobile, force single column */
+@media (max-width: 767px) {
+	.dashboard-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.dashboard-widget {
+		grid-column: span 1 !important; /* override span on mobile */
+	}
+}
+
+.dashboard-widget {
+	min-width: 0;
+	width: 100%;
 }

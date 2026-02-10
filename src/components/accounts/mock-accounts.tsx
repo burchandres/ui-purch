@@ -15,7 +15,7 @@ export const mockAccounts: Account[] = [
 		itemId: 'WF-id',
 		name: 'Active Cash Credit Card',
 		availableBalance: 500,
-		currentBalance: 2234.5,
+		currentBalance: 4230.5,
 		type: 'Credit',
 		subType: 'Credit Card',
 	},

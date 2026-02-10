@@ -23,7 +23,7 @@ import { Heading3 } from '../common/heading-3';
 import { ActivityFeed } from './activity-feed';
 import { mockAccounts } from './mock-accounts';
 
-const CARD_WIDTH = 235;
+const MIN_CARD_WIDTH = 220;
 
 export type AccountCardProps = {
 	itemName?: string;
@@ -37,11 +37,17 @@ export const AccountCard: FC<AccountCardProps> = ({
 }) => (
 	<Card
 		variant="clickable"
-		style={{ minWidth: `${CARD_WIDTH}px` }}
+		style={{ minWidth: `${MIN_CARD_WIDTH}px` }}
 		onClick={() => onClick(account.id)}
 	>
 		<CardHeader
-			style={{ marginBottom: -20, whiteSpace: 'nowrap', overflow: 'hidden' }}
+			style={{
+				marginBottom: -20,
+				marginTop: -10,
+				marginLeft: -5,
+				whiteSpace: 'nowrap',
+				overflow: 'hidden',
+			}}
 		>
 			<CardTitle style={{ fontSize: '16px' }}>{account.name}</CardTitle>
 			{itemName && (
@@ -105,9 +111,10 @@ export const AccountCards: FC = () => {
 			style={{
 				display: 'flex',
 				flexDirection: 'row',
-				gap: 40,
-				marginLeft: 20,
-				marginBottom: 40,
+				flexWrap: 'wrap',
+				gap: 20,
+				marginBottom: 10,
+				justifyContent: 'space-evenly',
 			}}
 		>
 			{accounts?.length ? (
@@ -129,7 +136,7 @@ export const AccountCards: FC = () => {
 								variant="card"
 								defaultValue={[type.value]}
 								style={{
-									minWidth: `${CARD_WIDTH + 25}px`,
+									minWidth: `${MIN_CARD_WIDTH + 25}px`,
 								}}
 							>
 								<AccordionItem value={type.value}>
@@ -166,7 +173,7 @@ export const AccountCards: FC = () => {
 											color: 'darkcyan',
 										}}
 									>
-										<span>{`Total ${type.value === 'Credit' ? 'debt' : 'saved'}: `}</span>
+										<span>{`Total: `}</span>
 										<span style={{ fontWeight: 'bold' }}>
 											{formatMoney(
 												filteredAccounts.reduce((acc, curr) => {
@@ -199,7 +206,6 @@ export const AccountsOverview: FC = () => (
 			gap: appearanceConfig.lgGap,
 		}}
 	>
-		<Heading3 content="Overview" />
 		<AccountCards />
 		<Separator />
 		<Heading3 content="Activity" />
