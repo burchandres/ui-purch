@@ -11,10 +11,7 @@
   "rules": {
     "typescript/no-explicit-any": "error",
     "prefer-const": "error",
-    "no-var": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react-refresh/only-export-components": "warn"
+    "no-var": "error"
   },
   "env": {
     "browser": true,
