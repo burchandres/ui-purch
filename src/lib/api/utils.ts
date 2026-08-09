@@ -1,4 +1,4 @@
-import { camelCase, mapKeys, snakeCase } from "lodash";
+import { camelCase, mapKeys, snakeCase } from 'lodash';
 
 // oxlint-disable-next-line typescript/no-explicit-any -- this function purposefully takes any type
 export const keysToSnakeCase = (obj: Record<string, any>) =>
@@ -20,7 +20,7 @@ export const keysToUnCap = (obj: Record<string, any>) =>
 // oxlint-disable-next-line typescript/no-explicit-any -- this function purposefully takes any type
 export const parseErrorMessage = (error: any): string => {
   // oxlint-disable-next-line typescript/no-explicit-any -- this function purposefully takes any type
-  const isStringWithLength = (val: any) => typeof val === "string" && val.length;
+  const isStringWithLength = (val: any) => typeof val === 'string' && val.length;
   const message = isStringWithLength(error.response.data.message)
     ? error.response.data.message
     : isStringWithLength(error.response.data.error)
@@ -33,11 +33,11 @@ export const parseErrorMessage = (error: any): string => {
             ? error.message
             : isStringWithLength(error)
               ? error
-              : "An error occurred";
+              : 'An error occurred';
 
   const messageMap: Record<string, string> = {
     'ERROR: duplicate key value violates unique constraint "users_username_key" (SQLSTATE 23505)':
-      "Username already exists",
+      'Username already exists',
   };
   return messageMap[message] || message;
 };

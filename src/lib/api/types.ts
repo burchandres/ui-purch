@@ -1,4 +1,4 @@
-import type { IncomeRate } from "@/config/inputs";
+import type { IncomeRate } from '@/config/inputs';
 
 export type ApiError = {
   response: {
@@ -15,7 +15,7 @@ export type User = {
   incomeRate?: IncomeRate;
 };
 
-export type UserRegisterRequest = Omit<User, "id">;
+export type UserRegisterRequest = Omit<User, 'id'>;
 
 export type UserUpdateRequest = Partial<User>;
 
@@ -24,7 +24,7 @@ export type UserLoginRequest = {
   password: string;
 };
 
-export type UserDeleteResponse = Omit<User, "id" | "income" | "incomeRate">;
+export type UserDeleteResponse = Omit<User, 'id' | 'income' | 'incomeRate'>;
 
 export type LinkTokenResponse = {
   linkToken: string;
@@ -50,7 +50,7 @@ type CamelToSnake<T> = {
 
 // oxlint-disable-next-line typescript/no-explicit-any -- this should handle many data types
 export function camelToSnake<T extends Record<string, any>>(obj: T): CamelToSnake<T> {
-  if (obj === null || typeof obj !== "object") {
+  if (obj === null || typeof obj !== 'object') {
     return obj;
   }
 
@@ -67,7 +67,7 @@ export function camelToSnake<T extends Record<string, any>>(obj: T): CamelToSnak
       const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
       const value = obj[key];
 
-      result[snakeKey] = typeof value === "object" && value !== null ? camelToSnake(value) : value;
+      result[snakeKey] = typeof value === 'object' && value !== null ? camelToSnake(value) : value;
     }
   }
 
@@ -90,7 +90,7 @@ type SnakeToCamel<T> = {
 
 // oxlint-disable-next-line typescript/no-explicit-any -- this should handle many data types
 export function snakeToCamel<T extends Record<string, any>>(obj: T): SnakeToCamel<T> {
-  if (obj === null || typeof obj !== "object") {
+  if (obj === null || typeof obj !== 'object') {
     return obj;
   }
 
@@ -107,7 +107,7 @@ export function snakeToCamel<T extends Record<string, any>>(obj: T): SnakeToCame
       const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
       const value = obj[key];
 
-      result[camelKey] = typeof value === "object" && value !== null ? snakeToCamel(value) : value;
+      result[camelKey] = typeof value === 'object' && value !== null ? snakeToCamel(value) : value;
     }
   }
 

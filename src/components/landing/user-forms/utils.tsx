@@ -1,4 +1,4 @@
-import z from "zod";
+import z from 'zod';
 
 /**
  * converts a Zod schema to an edit schema where all fields are optional
@@ -11,7 +11,7 @@ export function createEditSchema<T extends z.ZodRawShape>(
     keepRequired?: (keyof T)[]; // fields that should remain required even in edit mode
   },
 ) {
-  const { message = "At least one field must be updated", keepRequired = [] } = options ?? {};
+  const { message = 'At least one field must be updated', keepRequired = [] } = options ?? {};
 
   // make all fields optional except those in keepRequired
   const optionalShape = Object.fromEntries(
@@ -30,7 +30,7 @@ export function createEditSchema<T extends z.ZodRawShape>(
     (data) => {
       // at least one field must be provided (not undefined and not empty string)
       return Object.values(data).some(
-        (value) => value !== undefined && value !== "" && value !== null,
+        (value) => value !== undefined && value !== '' && value !== null,
       );
     },
     { message },

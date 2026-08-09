@@ -8,135 +8,129 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as LandingRouteImport } from './routes/landing'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
-import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as AuthRouteImport } from './routes/_auth';
+import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard';
+import { Route as AuthSettingsRouteImport } from './routes/_auth.settings';
+import { Route as IndexRouteImport } from './routes/index';
+import { Route as LandingRouteImport } from './routes/landing';
 
 const LandingRoute = LandingRouteImport.update({
   id: '/landing',
   path: '/landing',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 const AuthDashboardRoute = AuthDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/landing': typeof LandingRoute
-  '/dashboard': typeof AuthDashboardRoute
-  '/settings': typeof AuthSettingsRoute
+  '/': typeof IndexRoute;
+  '/landing': typeof LandingRoute;
+  '/dashboard': typeof AuthDashboardRoute;
+  '/settings': typeof AuthSettingsRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/landing': typeof LandingRoute
-  '/dashboard': typeof AuthDashboardRoute
-  '/settings': typeof AuthSettingsRoute
+  '/': typeof IndexRoute;
+  '/landing': typeof LandingRoute;
+  '/dashboard': typeof AuthDashboardRoute;
+  '/settings': typeof AuthSettingsRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
-  '/landing': typeof LandingRoute
-  '/_auth/dashboard': typeof AuthDashboardRoute
-  '/_auth/settings': typeof AuthSettingsRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/_auth': typeof AuthRouteWithChildren;
+  '/landing': typeof LandingRoute;
+  '/_auth/dashboard': typeof AuthDashboardRoute;
+  '/_auth/settings': typeof AuthSettingsRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/landing' | '/dashboard' | '/settings'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/landing' | '/dashboard' | '/settings'
-  id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/landing'
-    | '/_auth/dashboard'
-    | '/_auth/settings'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: '/' | '/landing' | '/dashboard' | '/settings';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/landing' | '/dashboard' | '/settings';
+  id: '__root__' | '/' | '/_auth' | '/landing' | '/_auth/dashboard' | '/_auth/settings';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  LandingRoute: typeof LandingRoute
+  IndexRoute: typeof IndexRoute;
+  AuthRoute: typeof AuthRouteWithChildren;
+  LandingRoute: typeof LandingRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/landing': {
-      id: '/landing'
-      path: '/landing'
-      fullPath: '/landing'
-      preLoaderRoute: typeof LandingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/landing';
+      path: '/landing';
+      fullPath: '/landing';
+      preLoaderRoute: typeof LandingRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/_auth';
+      path: '';
+      fullPath: '';
+      preLoaderRoute: typeof AuthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_auth/settings': {
-      id: '/_auth/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthSettingsRouteImport
-      parentRoute: typeof AuthRoute
-    }
+      id: '/_auth/settings';
+      path: '/settings';
+      fullPath: '/settings';
+      preLoaderRoute: typeof AuthSettingsRouteImport;
+      parentRoute: typeof AuthRoute;
+    };
     '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardRouteImport
-      parentRoute: typeof AuthRoute
-    }
+      id: '/_auth/dashboard';
+      path: '/dashboard';
+      fullPath: '/dashboard';
+      preLoaderRoute: typeof AuthDashboardRouteImport;
+      parentRoute: typeof AuthRoute;
+    };
   }
 }
 
 interface AuthRouteChildren {
-  AuthDashboardRoute: typeof AuthDashboardRoute
-  AuthSettingsRoute: typeof AuthSettingsRoute
+  AuthDashboardRoute: typeof AuthDashboardRoute;
+  AuthSettingsRoute: typeof AuthSettingsRoute;
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
   AuthSettingsRoute: AuthSettingsRoute,
-}
+};
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   LandingRoute: LandingRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

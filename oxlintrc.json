@@ -1,15 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "react",
-    "react-hooks",
-    "react-refresh",
-    "jsx-a11y",
-    "import",
-    "unicorn",
-    "oxc"
-  ],
+  "plugins": ["typescript", "react", "jsx-a11y", "import", "unicorn", "oxc"],
   "categories": {
     "correctness": "error",
     "suspicious": "error",
@@ -24,12 +15,14 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react-refresh/only-export-components": "warn",
-    "import/order": [
-      "warn",
+    "sort-imports": [
+      "error",
       {
-        "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
-        "alphabetize": { "order": "asc", "caseInsensitive": true },
-        "newlines-between": "never"
+        "ignoreCase": true,
+        "ignoreDeclarationSort": false,
+        "ignoreMemberSort": false,
+        "allowSeparatedGroups": true,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }
     ]
   },

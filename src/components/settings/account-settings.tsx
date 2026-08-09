@@ -1,15 +1,17 @@
-import { type FC, useEffect } from "react";
-import { useUserInfo } from "@/hooks/user/login-logout";
-import { AccountCard, type CreateAccountFormData } from "../landing/user-forms/account";
+import { type FC, useEffect } from 'react';
+
+import { useUserInfo } from '@/hooks/user/login-logout';
+
+import { AccountCard, type CreateAccountFormData } from '../landing/user-forms/account';
 
 export const AccountSettings: FC = () => {
   const { user } = useUserInfo();
   useEffect(() => {
-    console.log("user", user);
+    console.log('user', user);
   }, [user]);
   return (
     <AccountCard
-      mode="edit"
+      mode='edit'
       defaultValues={
         {
           ...user,
