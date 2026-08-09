@@ -4,9 +4,6 @@ import { Lock } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import type { IncomeRate } from '@/config/inputs';
-
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
@@ -15,10 +12,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/base/toolt
 import { IncomeRateSelect } from '@/components/inputs/income-rate-select';
 import { MoneyInput } from '@/components/inputs/money-input';
 import { appearanceConfig } from '@/config/appearance';
+import type { IncomeRate } from '@/config/inputs';
 import { useLogin } from '@/hooks/user/login-logout';
 import { useRegisterUser, useUpdateUser } from '@/hooks/user/user-mutations';
 import { parseErrorMessage } from '@/lib/api/utils';
-
 import { FormField } from './form-field';
 import { createEditSchema } from './utils';
 

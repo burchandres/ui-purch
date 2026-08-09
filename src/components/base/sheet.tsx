@@ -1,8 +1,6 @@
-import type * as React from 'react';
-
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { SidebarClose } from 'lucide-react';
-
+import type * as React from 'react';
 import { appearanceConfig } from '@/config/appearance';
 import { cn } from '@/lib/shadcn';
 
@@ -67,7 +65,7 @@ function SheetContent({
       >
         {children}
         <SheetPrimitive.Close
-          className='ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-3 right-2 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none'
+          className='absolute top-3 right-2 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary'
           style={{ marginRight: appearanceConfig.smGap }}
         >
           <SidebarClose size={16} />

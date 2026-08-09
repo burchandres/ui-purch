@@ -1,6 +1,5 @@
 import { capitalize } from 'lodash';
 import { type ComponentRef, forwardRef } from 'react';
-
 import {
   Select,
   SelectContent,
@@ -69,7 +68,7 @@ const IncomeRateSelect = forwardRef<ComponentRef<typeof SelectTrigger>, IncomeRa
               <Tooltip key={rate.value}>
                 <TooltipTrigger asChild>
                   <SelectItem value={rate.value}>
-                    <div className='flex items-center justify-between w-full'>
+                    <div className='flex w-full items-center justify-between'>
                       <span>{formatLabel(rate)}</span>
                     </div>
                   </SelectItem>

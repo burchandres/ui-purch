@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-
 import { Label } from '@/components/base/label';
 
 interface FormFieldProps {
@@ -15,7 +14,7 @@ export const FormField = ({ id, label, error, children, className }: FormFieldPr
     <div className={`grid gap-2 ${className || ''}`}>
       <Label htmlFor={id}>{label}</Label>
       {children}
-      <div>{error && <p className='text-red-500 text-sm pl-3'>{error}</p>}</div>
+      <div>{error && <p className='pl-3 text-sm text-red-500'>{error}</p>}</div>
     </div>
   );
 };

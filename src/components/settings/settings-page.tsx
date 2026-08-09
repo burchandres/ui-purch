@@ -1,9 +1,6 @@
-import type { FC, ReactNode } from 'react';
-
 import { type LucideIcon, Palette, SquareUser, Toilet } from 'lucide-react';
-
+import type { FC, ReactNode } from 'react';
 import { appearanceConfig } from '@/config/appearance';
-
 import { Separator } from '../base/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
 import { AccountSettings } from './account-settings';
@@ -36,7 +33,7 @@ const sections: Record<string, SectionConfig> = {
 export const SettingsPage: FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Tabs defaultValue='account' orientation='vertical' className='flex flex-row min-h-max'>
+      <Tabs defaultValue='account' orientation='vertical' className='flex min-h-max flex-row'>
         <div
           style={{
             display: 'flex',

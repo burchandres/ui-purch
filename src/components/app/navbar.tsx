@@ -1,8 +1,6 @@
 import { Link } from '@tanstack/react-router';
-
 import { appearanceConfig } from '@/config/appearance';
 import { pagesConfig } from '@/config/pages';
-
 import { Separator } from '../base/separator';
 import { SheetClose, SheetContent, SheetFooter, SheetHeader } from '../base/sheet';
 
@@ -10,7 +8,7 @@ export function NavBar() {
   return (
     <SheetContent side='left'>
       <SheetHeader>
-        <span className='logo-text font-bold text-xl ml-2'>Purch</span>
+        <span className='logo-text ml-2 text-xl font-bold'>Purch</span>
       </SheetHeader>
       <div className='mx-4'>
         <Separator className='w-8' />

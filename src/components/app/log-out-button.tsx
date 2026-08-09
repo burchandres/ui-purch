@@ -1,7 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
-
 import { logout } from '@/lib/api/user';
-
 import { Button } from '../base/button';
 import {
   Dialog,

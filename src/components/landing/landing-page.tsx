@@ -3,7 +3,7 @@ import { AccountCard } from './user-forms/account';
 import { LoginCard } from './user-forms/login';
 
 const Body = () => (
-  <div className='block mt-8 ml-16 mr-16 text-lg text-center space-y-4'>
+  <div className='mt-8 mr-16 ml-16 block space-y-4 text-center text-lg'>
     <p> 👋 Welcome to Purch, a budgeting app created by 4 friends </p>
     <p>
       Check out the source code for the{' '}
@@ -35,7 +35,7 @@ export const LandingPage = () => {
       <div className='flex w-full justify-center'>
         <Body />
       </div>
-      <div className=' flex w-full justify-center mt-8 pb-10'>
+      <div className='mt-8 flex w-full justify-center pb-10'>
         <Tabs defaultValue='create'>
           <div className='mb-2'>
             <TabsList>

@@ -1,11 +1,8 @@
-import type { FC } from 'react';
-
 import { Link, useLocation } from '@tanstack/react-router';
 import { SidebarOpen, SquareUser } from 'lucide-react';
-
+import type { FC } from 'react';
 import { appearanceConfig } from '@/config/appearance';
 import { pagesConfig } from '@/config/pages';
-
 import { Button } from '../base/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../base/popover';
 import { Sheet, SheetTrigger } from '../base/sheet';
@@ -25,7 +22,7 @@ export const Header: FC = () => {
     <Sheet>
       <header className='sticky top-0 z-20 flex-shrink-0'>
         {/* Add flex-shrink-0 */}
-        <div className='min-h-14 p-2 pl-3 pr-5 bg-background w-full border flex justify-between items-center'>
+        <div className='flex min-h-14 w-full items-center justify-between border bg-background p-2 pr-5 pl-3'>
           <div
             style={{
               display: 'flex',
@@ -45,7 +42,7 @@ export const Header: FC = () => {
                 <PurchLogoSquare size={29} color='black' />
               </Link>
             </div>
-            <span className='logo-text font-bold text-xl -ml-1'>
+            <span className='logo-text -ml-1 text-xl font-bold'>
               {config ? config.display : ''}
             </span>
           </div>

@@ -5,18 +5,19 @@
   "semi": true,
   "singleQuote": true,
   "jsxSingleQuote": true,
-  "sortPackageJson": false,
   "ignorePatterns": ["dist/", "coverage/"],
+  "sortPackageJson": { "sortScripts": true },
   "sortImports": {
     "groups": [
-      "type-import",
-      ["value-builtin", "value-external"],
-      "type-internal",
-      "value-internal",
-      ["type-parent", "type-sibling", "type-index"],
-      ["value-parent", "value-sibling", "value-index"],
+      ["value-builtin", "value-external", "type-import"],
+      ["value-internal", "type-internal"],
+      ["value-parent", "value-sibling", "value-index", "type-parent", "type-sibling", "type-index"],
       "unknown"
     ],
     "newlinesBetween": false
+  },
+  "sortTailwindcss": {
+    "stylesheet": "./src/index.css",
+    "functions": ["clsx", "cs"]
   }
 }

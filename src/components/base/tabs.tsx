@@ -1,7 +1,5 @@
-import type * as React from 'react';
-
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-
+import type * as React from 'react';
 import { appearanceConfig } from '@/config/appearance';
 import { cn } from '@/lib/shadcn';
 

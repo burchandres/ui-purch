@@ -1,7 +1,5 @@
 import axios from 'axios';
-
 import { apiConfig } from '@/config/api';
-
 import { camelToSnake, snakeToCamel } from './types';
 
 export const api = axios.create({

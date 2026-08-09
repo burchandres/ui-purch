@@ -1,8 +1,6 @@
-import type { NumericFormatProps } from 'react-number-format';
-
 import { forwardRef } from 'react';
+import type { NumericFormatProps } from 'react-number-format';
 import { NumericFormat } from 'react-number-format';
-
 import { cn } from '@/lib/shadcn';
 
 interface MoneyInputProps extends Omit<

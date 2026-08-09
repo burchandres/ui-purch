@@ -1,5 +1,4 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-
 import { checkIfLoggedIn } from '@/lib/api/user';
 
 export const Route = createFileRoute('/')({

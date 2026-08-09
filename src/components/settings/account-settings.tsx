@@ -1,7 +1,5 @@
 import { type FC, useEffect } from 'react';
-
 import { useUserInfo } from '@/hooks/user/login-logout';
-
 import { AccountCard, type CreateAccountFormData } from '../landing/user-forms/account';
 
 export const AccountSettings: FC = () => {

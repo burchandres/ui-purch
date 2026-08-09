@@ -1,5 +1,4 @@
 import type * as React from 'react';
-
 import { cn } from '@/lib/shadcn';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {

@@ -1,3 +1,4 @@
+import { api } from './api';
 import type {
   LinkTokenResponse,
   User,
@@ -5,8 +6,6 @@ import type {
   UserRegisterRequest,
   UserUpdateRequest,
 } from './types';
-
-import { api } from './api';
 
 // GET /user/info
 export const getUserInfo = async (): Promise<User> => {

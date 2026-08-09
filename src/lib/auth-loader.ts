@@ -1,5 +1,4 @@
 import { redirect } from '@tanstack/react-router';
-
 import { apiConfig } from '@/config/api';
 import { queryKeys } from '@/config/query-keys';
 import { getUserInfo } from '@/lib/api/user';

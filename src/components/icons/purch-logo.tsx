@@ -32,8 +32,8 @@ export const PurchLogoSquare = ({ color, size }: LogoProps) => (
 );
 
 export const PurchLogoText = () => (
-  <div className='flex items-center h-8 group cursor-pointer w-fit'>
+  <div className='group flex h-8 w-fit cursor-pointer items-center'>
     <PurchLogoSquare color='black' size='27' />
-    <span className='logo-text font-bold text-xl mb-1 ml-2'>Purch</span>
+    <span className='logo-text mb-1 ml-2 text-xl font-bold'>Purch</span>
   </div>
 );

@@ -3,7 +3,6 @@ import { useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
 import { Button } from '@/components/base/button';
 import { Card, CardContent } from '@/components/base/card';
 import { Form } from '@/components/base/form';
@@ -11,7 +10,6 @@ import { Input } from '@/components/base/input';
 import { appearanceConfig } from '@/config/appearance';
 import { useLogin } from '@/hooks/user/login-logout';
 import { parseErrorMessage } from '@/lib/api/utils';
-
 import { FormField } from './form-field';
 
 const loginSchema = z.object({
