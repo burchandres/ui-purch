@@ -14,17 +14,7 @@
     "no-var": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "react-refresh/only-export-components": "warn",
-    "sort-imports": [
-      "error",
-      {
-        "ignoreCase": true,
-        "ignoreDeclarationSort": false,
-        "ignoreMemberSort": false,
-        "allowSeparatedGroups": true,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-      }
-    ]
+    "react-refresh/only-export-components": "warn"
   },
   "env": {
     "browser": true,
