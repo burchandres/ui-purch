@@ -1,0 +1,47 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "jsx-a11y", "import", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "style": "warn",
+    "pedantic": "off",
+    "nursery": "off"
+  },
+  "rules": {
+    "import/no-named-export": "off",
+    "typescript/no-explicit-any": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "no-ternary": "allow",
+    "no-use-before-define": ["error", { "allowNamedExports": true }],
+    "func-style": ["warn", "declaration", { "allowArrowFunctions": true }],
+    "react/react-in-jsx-scope": "allow",
+    "import/exports-last": "allow",
+    "react/jsx-max-depth": "allow",
+    "react/jsx-props-no-spreading": "allow",
+    "react/jsx-handler-names": "allow",
+    "no-magic-numbers": "off",
+    "id-length": "off",
+    "prefer-named-capture-group": "off",
+    "unicorn/no-null": "off",
+    "import/prefer-default-export": "off",
+    "sort-imports": "off",
+    "typescript/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "separate-type-imports",
+        "prefer": "type-imports"
+      }
+    ],
+    "typescript/no-import-type-side-effects": "error",
+    "no-duplicate-imports": "off",
+    "import/no-duplicates": "error",
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"]
+  },
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "ignorePatterns": ["dist", "src/routeTree.gen.ts"]
+}

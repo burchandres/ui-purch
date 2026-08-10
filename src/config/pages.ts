@@ -1,31 +1,32 @@
-import { House, type LucideIcon, Settings } from 'lucide-react';
+import { House, Settings } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-export type PageConfig = {
-	url: string;
-	display: string;
-	icon: LucideIcon;
-};
+export interface PageConfig {
+  url: string;
+  display: string;
+  icon: LucideIcon;
+}
 
-export type PagesConfig = {
-	pages: Record<string, PageConfig>;
-};
+export interface PagesConfig {
+  pages: Record<string, PageConfig>;
+}
 
 export const pagesConfig: PagesConfig = {
-	pages: {
-		landing: {
-			url: 'landing',
-			display: 'Purch',
-			icon: House,
-		},
-		dashboard: {
-			url: 'dashboard',
-			display: 'Dashboard',
-			icon: House,
-		},
-		settings: {
-			url: 'settings',
-			display: 'Settings',
-			icon: Settings,
-		},
-	},
+  pages: {
+    dashboard: {
+      display: 'Dashboard',
+      icon: House,
+      url: 'dashboard',
+    },
+    landing: {
+      display: 'Purch',
+      icon: House,
+      url: 'landing',
+    },
+    settings: {
+      display: 'Settings',
+      icon: Settings,
+      url: 'settings',
+    },
+  },
 };

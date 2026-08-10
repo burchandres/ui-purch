@@ -13,84 +13,76 @@ import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
 
 const loginSchema = z.object({
-	username: z
-		.string()
-		.min(1, { message: 'Username is required' })
-		.max(20, { message: 'Username must be less than 20 characters' }),
-	password: z
-		.string()
-		.min(4, { message: 'Password must be at least 4 characters' })
-		.max(20, { message: 'Password must be less than 20 characters' }),
+  password: z
+    .string()
+    .min(4, { message: 'Password must be at least 4 characters' })
+    .max(20, { message: 'Password must be less than 20 characters' }),
+  username: z
+    .string()
+    .min(1, { message: 'Username is required' })
+    .max(20, { message: 'Username must be less than 20 characters' }),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 
 export const LoginCard = () => {
-	const navigate = useNavigate();
-	const { login, isLoading } = useLogin();
+  const navigate = useNavigate();
+  const { login, isLoading } = useLogin();
 
-	const form = useForm<LoginFormData>({
-		resolver: zodResolver(loginSchema),
-		defaultValues: {
-			username: '',
-			password: '',
-		},
-	});
+  const form = useForm<LoginFormData>({
+    defaultValues: {
+      password: '',
+      username: '',
+    },
+    resolver: zodResolver(loginSchema),
+  });
 
-	const handleSubmit = (values: LoginFormData) => {
-		login(values, {
-			onSuccess: () => {
-				toast.success('Successfully logged in');
-				navigate({ to: '/dashboard' });
-			},
-			onError: (error: Error) => {
-				toast.error(parseErrorMessage(error));
-			},
-		});
-	};
+  const handleSubmit = (values: LoginFormData) => {
+    login(values, {
+      onError: (error: Error) => {
+        toast.error(parseErrorMessage(error));
+      },
+      onSuccess: () => {
+        toast.success('Successfully logged in');
+        navigate({ to: '/dashboard' });
+      },
+    });
+  };
 
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-				<Card>
-					<CardContent>
-						<div
-							style={{
-								display: 'flex',
-								flexDirection: 'column',
-								gap: appearanceConfig.mdGap,
-							}}
-						>
-							<FormField
-								id="username"
-								label="Username"
-								error={form.formState.errors.username?.message}
-							>
-								<Input
-									id="username"
-									type="text"
-									{...form.register('username')}
-								/>
-							</FormField>
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4'>
+        <Card>
+          <CardContent>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: appearanceConfig.mdGap,
+              }}
+            >
+              <FormField
+                id='username'
+                label='Username'
+                error={form.formState.errors.username?.message}
+              >
+                <Input id='username' type='text' {...form.register('username')} />
+              </FormField>
 
-							<FormField
-								id="password"
-								label="Password"
-								error={form.formState.errors.password?.message}
-							>
-								<Input
-									id="password"
-									type="password"
-									{...form.register('password')}
-								/>
-							</FormField>
-						</div>
-						<Button className="mt-4" type="submit" disabled={isLoading}>
-							Submit
-						</Button>
-					</CardContent>
-				</Card>
-			</form>
-		</Form>
-	);
+              <FormField
+                id='password'
+                label='Password'
+                error={form.formState.errors.password?.message}
+              >
+                <Input id='password' type='password' {...form.register('password')} />
+              </FormField>
+            </div>
+            <Button className='mt-4' type='submit' disabled={isLoading}>
+              Submit
+            </Button>
+          </CardContent>
+        </Card>
+      </form>
+    </Form>
+  );
 };

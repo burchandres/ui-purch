@@ -5,27 +5,27 @@ import { getUserInfo } from '@/lib/api/user';
 import { queryClient } from '@/lib/queryClient';
 
 export async function requireAuth() {
-	try {
-		await queryClient.fetchQuery({
-			queryKey: [queryKeys.user.info],
-			queryFn: getUserInfo,
-			staleTime: apiConfig.staleTimes.checkAuth,
-		});
-		return true;
-	} catch {
-		throw redirect({ to: '/landing' });
-	}
+  try {
+    await queryClient.fetchQuery({
+      queryFn: getUserInfo,
+      queryKey: [queryKeys.user.info],
+      staleTime: apiConfig.staleTimes.checkAuth,
+    });
+    return true;
+  } catch {
+    throw redirect({ to: '/landing' });
+  }
 }
 
 export async function redirectIfAuth() {
-	try {
-		await queryClient.fetchQuery({
-			queryKey: [queryKeys.user.info],
-			queryFn: getUserInfo,
-			staleTime: apiConfig.staleTimes.checkAuth,
-		});
-		throw redirect({ to: '/dashboard' });
-	} catch {
-		return false;
-	}
+  try {
+    await queryClient.fetchQuery({
+      queryFn: getUserInfo,
+      queryKey: [queryKeys.user.info],
+      staleTime: apiConfig.staleTimes.checkAuth,
+    });
+    throw redirect({ to: '/dashboard' });
+  } catch {
+    return false;
+  }
 }

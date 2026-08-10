@@ -4,43 +4,43 @@ import type { UserUpdateRequest } from '@/lib/api/types';
 import { registerUser, updateUser } from '@/lib/api/user';
 
 export const useRegisterUser = () => {
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	const mutation = useMutation({
-		mutationFn: registerUser,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
-		},
-	});
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
+    },
+  });
 
-	return {
-		register: mutation.mutate,
-		registerAsync: mutation.mutateAsync,
-		isLoading: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
-		isSuccess: mutation.isSuccess,
-		data: mutation.data,
-	};
+  return {
+    data: mutation.data,
+    error: mutation.error,
+    isError: mutation.isError,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
+    register: mutation.mutate,
+    registerAsync: mutation.mutateAsync,
+  };
 };
 
 export const useUpdateUser = () => {
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	const mutation = useMutation({
-		mutationFn: (data: UserUpdateRequest) => updateUser(data),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
-		},
-	});
+  const mutation = useMutation({
+    mutationFn: (data: UserUpdateRequest) => updateUser(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.user.info] });
+    },
+  });
 
-	return {
-		updateUser: mutation.mutate,
-		updateUserAsync: mutation.mutateAsync,
-		isLoading: mutation.isPending,
-		isError: mutation.isError,
-		error: mutation.error,
-		isSuccess: mutation.isSuccess,
-		data: mutation.data,
-	};
+  return {
+    data: mutation.data,
+    error: mutation.error,
+    isError: mutation.isError,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
+    updateUser: mutation.mutate,
+    updateUserAsync: mutation.mutateAsync,
+  };
 };
