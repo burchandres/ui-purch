@@ -25,9 +25,9 @@ export const Header: FC = () => {
         <div className='flex min-h-14 w-full items-center justify-between border bg-background p-2 pr-5 pl-3'>
           <div
             style={{
+              alignItems: 'center',
               display: 'flex',
               gap: appearanceConfig.lgGap,
-              alignItems: 'center',
             }}
           >
             <div className='min-w-13'>
@@ -59,8 +59,8 @@ export const Header: FC = () => {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: 'fit-content',
                       gap: appearanceConfig.mdGap,
+                      width: 'fit-content',
                     }}
                   >
                     <Button size='sm' className='max-w-26' variant='ghost'>

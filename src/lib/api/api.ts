@@ -7,20 +7,20 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// request interceptor - convert camelCase to snake_case
+// Request interceptor - convert camelCase to snake_case
 api.interceptors.request.use(
   (config) => {
-    // convert request body
+    // Convert request body
     if (config.data && typeof config.data === 'object') {
-      // skip FormData and URLSearchParams
+      // Skip FormData and URLSearchParams
       if (!(config.data instanceof FormData) && !(config.data instanceof URLSearchParams)) {
         config.data = camelToSnake(config.data);
       }
     }
 
-    // convert query params
+    // Convert query params
     if (config.params && typeof config.params === 'object') {
-      // skip URLSearchParams
+      // Skip URLSearchParams
       if (!(config.params instanceof URLSearchParams)) {
         config.params = camelToSnake(config.params);
       }
@@ -28,12 +28,10 @@ api.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
 
-// response interceptor - convert snake_case to camelCase
+// Response interceptor - convert snake_case to camelCase
 api.interceptors.response.use(
   (response) => {
     // Convert response data

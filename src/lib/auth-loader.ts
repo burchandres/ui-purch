@@ -7,8 +7,8 @@ import { queryClient } from '@/lib/queryClient';
 export async function requireAuth() {
   try {
     await queryClient.fetchQuery({
-      queryKey: [queryKeys.user.info],
       queryFn: getUserInfo,
+      queryKey: [queryKeys.user.info],
       staleTime: apiConfig.staleTimes.checkAuth,
     });
     return true;
@@ -20,8 +20,8 @@ export async function requireAuth() {
 export async function redirectIfAuth() {
   try {
     await queryClient.fetchQuery({
-      queryKey: [queryKeys.user.info],
       queryFn: getUserInfo,
+      queryKey: [queryKeys.user.info],
       staleTime: apiConfig.staleTimes.checkAuth,
     });
     throw redirect({ to: '/dashboard' });

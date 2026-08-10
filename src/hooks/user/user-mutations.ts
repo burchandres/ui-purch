@@ -14,13 +14,13 @@ export const useRegisterUser = () => {
   });
 
   return {
+    data: mutation.data,
+    error: mutation.error,
+    isError: mutation.isError,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
     register: mutation.mutate,
     registerAsync: mutation.mutateAsync,
-    isLoading: mutation.isPending,
-    isError: mutation.isError,
-    error: mutation.error,
-    isSuccess: mutation.isSuccess,
-    data: mutation.data,
   };
 };
 
@@ -35,12 +35,12 @@ export const useUpdateUser = () => {
   });
 
   return {
+    data: mutation.data,
+    error: mutation.error,
+    isError: mutation.isError,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
     updateUser: mutation.mutate,
     updateUserAsync: mutation.mutateAsync,
-    isLoading: mutation.isPending,
-    isError: mutation.isError,
-    error: mutation.error,
-    isSuccess: mutation.isSuccess,
-    data: mutation.data,
   };
 };

@@ -1,5 +1,3 @@
 import type { FC } from 'react';
 
-export const AppearanceSettings: FC = () => {
-  return <p>apeaaarance</p>;
-};
+export const AppearanceSettings: FC = () => <p>apeaaarance</p>;

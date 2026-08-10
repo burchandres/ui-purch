@@ -1,9 +1,9 @@
-export type QueryKeysConfig = {
+export interface QueryKeysConfig {
   user: {
     info: string;
     linkToken: string;
   };
-};
+}
 
 export const queryKeys: QueryKeysConfig = {
   user: {

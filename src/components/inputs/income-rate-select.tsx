@@ -1,5 +1,6 @@
 import { capitalize } from 'lodash';
-import { type ComponentRef, forwardRef } from 'react';
+import { forwardRef } from 'react';
+import type { ComponentRef } from 'react';
 import {
   Select,
   SelectContent,
@@ -41,9 +42,9 @@ const IncomeRateSelect = forwardRef<ComponentRef<typeof SelectTrigger>, IncomeRa
     },
     ref,
   ) => {
-    const rates = inputsConfig.income.rates;
+    const { rates } = inputsConfig.income;
 
-    // helper function to capitalize first letter
+    // Helper function to capitalize first letter
     const formatLabel = (rate: (typeof rates)[0]) => rate.label || capitalize(rate.value);
 
     const handleValueChange = (val: string) => {

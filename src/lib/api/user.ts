@@ -44,7 +44,7 @@ export const getLinkToken = async (): Promise<LinkTokenResponse> => {
   return res.data;
 };
 
-// helper function
+// Helper function
 export const checkIfLoggedIn = async () => {
   try {
     await getUserInfo();

@@ -1,36 +1,36 @@
 import type { IncomeRate } from '@/config/inputs';
 
-export type ApiError = {
+export interface ApiError {
   response: {
     data: string;
   };
-};
+}
 
-export type User = {
+export interface User {
   id: number;
   username: string;
   firstName: string;
   lastName: string;
   income?: number;
   incomeRate?: IncomeRate;
-};
+}
 
 export type UserRegisterRequest = Omit<User, 'id'>;
 
 export type UserUpdateRequest = Partial<User>;
 
-export type UserLoginRequest = {
+export interface UserLoginRequest {
   username: string;
   password: string;
-};
+}
 
 export type UserDeleteResponse = Omit<User, 'id' | 'income' | 'incomeRate'>;
 
-export type LinkTokenResponse = {
+export interface LinkTokenResponse {
   linkToken: string;
   expiration: string;
   requestId: string;
-};
+}
 
 type CamelToSnakeCase<S extends string> = S extends `${infer First}${infer Rest}`
   ? First extends Uppercase<First>
@@ -40,9 +40,9 @@ type CamelToSnakeCase<S extends string> = S extends `${infer First}${infer Rest}
 
 type CamelToSnake<T> = {
   [K in keyof T as CamelToSnakeCase<K & string>]: T[K] extends object
-    ? T[K] extends Array<infer U>
+    ? T[K] extends (infer U)[]
       ? U extends object
-        ? Array<CamelToSnake<U>>
+        ? CamelToSnake<U>[]
         : T[K]
       : CamelToSnake<T[K]>
     : T[K];
@@ -78,38 +78,34 @@ type SnakeToCamelCase<S extends string> = S extends `${infer First}_${infer Seco
   ? `${First}${Uppercase<Second>}${SnakeToCamelCase<Rest>}`
   : S;
 
-type SnakeToCamel<T> = {
-  [K in keyof T as SnakeToCamelCase<K & string>]: T[K] extends object
-    ? T[K] extends Array<infer U>
-      ? U extends object
-        ? Array<SnakeToCamel<U>>
-        : T[K]
-      : SnakeToCamel<T[K]>
-    : T[K];
+type SnakeToCamel<Type> = {
+  [Key in keyof Type as SnakeToCamelCase<K & string>]: Type[Key] extends object
+    ? Type[Key] extends (infer Unknown)[]
+      ? Unknown extends object
+        ? SnakeToCamel<Unknown>[]
+        : Type[Key]
+      : SnakeToCamel<Type[Key]>
+    : Type[Key];
 };
 
 // oxlint-disable-next-line typescript/no-explicit-any -- this should handle many data types
-export function snakeToCamel<T extends Record<string, any>>(obj: T): SnakeToCamel<T> {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
+export const snakeToCamel<T extends Record<string, any>>(obj: T): SnakeToCamel<T> = () => {
+  if (obj === null || typeof obj !== 'object') return obj;
 
-  if (Array.isArray(obj)) {
+  if (Array.isArray(obj))
     // oxlint-disable-next-line typescript/no-explicit-any -- this should handle many data types
     return obj.map((item) => snakeToCamel(item)) as any;
-  }
 
   // oxlint-disable-next-line typescript/no-explicit-any -- this should handle many data types
   const result: any = {};
 
-  for (const key in obj) {
+  for (const key in obj)
     if (Object.hasOwn(obj, key)) {
       const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
       const value = obj[key];
 
       result[camelKey] = typeof value === 'object' && value !== null ? snakeToCamel(value) : value;
     }
-  }
 
   return result;
 }

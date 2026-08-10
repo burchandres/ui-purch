@@ -1,9 +1,9 @@
-type IconProps = {
+interface IconProps {
   color: string;
   pathString: string;
   size?: string | number;
   className?: string;
-};
+}
 
 type LogoProps = Omit<IconProps, 'pathString'>;
 

@@ -2,34 +2,36 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../base/tabs';
 import { AccountCard } from './user-forms/account';
 import { LoginCard } from './user-forms/login';
 
-const Body = () => (
-  <div className='mt-8 mr-16 ml-16 block space-y-4 text-center text-lg'>
-    <p> 👋 Welcome to Purch, a budgeting app created by 4 friends </p>
-    <p>
-      Check out the source code for the{' '}
-      <a className='underline' href='https://github.com/burchandres/purch'>
-        service
-      </a>{' '}
-      or the <a href='https://github.com/burchandres/ui-purch'>site</a>
-    </p>
-    <p>Try it out by making an account below 👇</p>
-  </div>
-);
+function Body() {
+  return (
+    <div className='mt-8 mr-16 ml-16 block space-y-4 text-center text-lg'>
+      <p> 👋 Welcome to Purch, a budgeting app created by 4 friends </p>
+      <p>
+        Check out the source code for the{' '}
+        <a className='underline' href='https://github.com/burchandres/purch'>
+          service
+        </a>{' '}
+        or the <a href='https://github.com/burchandres/ui-purch'>site</a>
+      </p>
+      <p>Try it out by making an account below 👇</p>
+    </div>
+  );
+}
 
 const tabs = [
   {
-    id: 'create',
-    display: 'Create account',
     component: AccountCard,
+    display: 'Create account',
+    id: 'create',
   },
   {
-    id: 'login',
-    display: 'Login',
     component: LoginCard,
+    display: 'Login',
+    id: 'login',
   },
 ];
 
-export const LandingPage = () => {
+export function LandingPage() {
   return (
     <div>
       <div className='flex w-full justify-center'>
@@ -57,4 +59,4 @@ export const LandingPage = () => {
       </div>
     </div>
   );
-};
+}

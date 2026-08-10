@@ -16,7 +16,7 @@ export const keysToCap = (obj: Record<string, any>) =>
 export const keysToUnCap = (obj: Record<string, any>) =>
   mapKeys(obj, (_val, key) => `${key.charAt(0).toLowerCase()}${key.slice(1)}`);
 
-// tries to pull useful messages out of different error messages
+// Tries to pull useful messages out of different error messages
 // oxlint-disable-next-line typescript/no-explicit-any -- this function purposefully takes any type
 export const parseErrorMessage = (error: any): string => {
   // oxlint-disable-next-line typescript/no-explicit-any -- this function purposefully takes any type

@@ -1,6 +1,8 @@
-import { type FC, useEffect } from 'react';
+import { useEffect } from 'react';
+import type { FC } from 'react';
 import { useUserInfo } from '@/hooks/user/login-logout';
-import { AccountCard, type CreateAccountFormData } from '../landing/user-forms/account';
+import { AccountCard } from '../landing/user-forms/account';
+import type { CreateAccountFormData } from '../landing/user-forms/account';
 
 export const AccountSettings: FC = () => {
   const { user } = useUserInfo();
@@ -13,12 +15,12 @@ export const AccountSettings: FC = () => {
       defaultValues={
         {
           ...user,
-          // income:
-          // 	user?.income && !Number.isNaN(parseFloat(user.income))
+          // Income:
+          // 	User?.income && !Number.isNaN(parseFloat(user.income))
           // 		? parseFloat(user.income)
           // 		: undefined,
           password: undefined,
-          // id: user?.id,
+          // Id: user?.id,
         } as Partial<CreateAccountFormData>
       }
     />

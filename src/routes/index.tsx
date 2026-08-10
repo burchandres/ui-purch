@@ -4,7 +4,9 @@ import { checkIfLoggedIn } from '@/lib/api/user';
 export const Route = createFileRoute('/')({
   loader: async () => {
     const loggedIn = await checkIfLoggedIn();
-    if (!loggedIn) throw redirect({ to: '/landing' });
+    if (!loggedIn) {
+      throw redirect({ to: '/landing' });
+    }
     throw redirect({ to: '/dashboard' });
   },
 });

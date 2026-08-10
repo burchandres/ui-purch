@@ -19,46 +19,41 @@ import { parseErrorMessage } from '@/lib/api/utils';
 import { FormField } from './form-field';
 import { createEditSchema } from './utils';
 
-// create schema requires all fields
+// Create schema requires all fields
 const createAccountSchema = z.object({
-  username: z
-    .string()
-    .min(2, { message: 'Username must be at least 2 characters' })
-    .max(20, { message: 'Username must be less than 20 characters' }),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 characters' })
-    .max(20, { message: 'Password must be less than 20 characters' }),
   firstName: z
     .string()
     .min(1, { message: 'First name is required' })
     .max(20, { message: 'First name must be less than 20 characters' }),
+  income: z
+    .number()
+    .optional() // Not actually optional. just wanted to customize empty message
+    .refine((val) => val !== undefined, 'Income is required'),
+  incomeRate: z.string().optional(),
   lastName: z
     .string()
     .min(1, { message: 'Last name is required' })
     .max(20, { message: 'Last name must be less than 20 characters' }),
-  income: z
-    .number()
-    .optional() // not actually optional. just wanted to customize empty message
-    .refine((val) => val !== undefined, 'Income is required'),
-  incomeRate: z.string().optional(),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 characters' })
+    .max(20, { message: 'Password must be less than 20 characters' }),
+  username: z
+    .string()
+    .min(2, { message: 'Username must be at least 2 characters' })
+    .max(20, { message: 'Username must be less than 20 characters' }),
 });
 
-// edit schema - at least one field must be provided
+// Edit schema - at least one field must be provided
 const editAccountSchema = createEditSchema(createAccountSchema, {
   message: 'You must update at least one field',
 }).extend({
   password: z
     .string()
     .optional()
-    .refine(
-      (pw) => {
-        return !pw || (pw.length >= 4 && pw.length <= 20);
-      },
-      {
-        message: 'New password must be between 4 and 20 characters in length',
-      },
-    ),
+    .refine((pw) => !pw || (pw.length >= 4 && pw.length <= 20), {
+      message: 'New password must be between 4 and 20 characters in length',
+    }),
 });
 
 export type CreateAccountFormData = z.infer<typeof createAccountSchema>;
@@ -69,7 +64,7 @@ interface AccountCardProps {
   defaultValues?: Partial<CreateAccountFormData> & { id?: number };
 }
 
-export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps) => {
+export function AccountCard({ mode = 'create', defaultValues }: AccountCardProps) {
   const navigate = useNavigate();
   const isEditMode = mode === 'edit';
 
@@ -78,23 +73,23 @@ export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps
   const { login } = useLogin();
 
   const form = useForm<CreateAccountFormData | EditAccountFormData>({
-    resolver: zodResolver(isEditMode ? editAccountSchema : createAccountSchema),
     defaultValues: isEditMode
       ? defaultValues
       : {
-          username: '',
-          password: undefined,
           firstName: '',
-          lastName: '',
           income: undefined,
           incomeRate: 'annual',
+          lastName: '',
+          password: undefined,
+          username: '',
         },
+    resolver: zodResolver(isEditMode ? editAccountSchema : createAccountSchema),
   });
 
   const handleSubmit = async (values: CreateAccountFormData | EditAccountFormData) => {
     if (isEditMode) {
-      // filter out undefined values to only send changed fields
-      // special handling: exclude password if undefined, but include all other fields
+      // Filter out undefined values to only send changed fields
+      // Special handling: exclude password if undefined, but include all other fields
       const updates = Object.fromEntries(
         Object.entries(values).filter(([key, value]) => {
           // Exclude password only if it's undefined
@@ -107,11 +102,11 @@ export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps
       );
 
       updateUser(updates, {
-        onSuccess: () => {
-          toast.success('Profile successfully updated');
-        },
         onError: (error: Error) => {
           toast.error(parseErrorMessage(error));
+        },
+        onSuccess: () => {
+          toast.success('Profile successfully updated');
         },
       });
     } else {
@@ -121,26 +116,26 @@ export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps
           incomeRate: values.incomeRate as IncomeRate,
         },
         {
+          onError: (error: Error) => {
+            toast.error(parseErrorMessage(error));
+          },
           onSuccess: () => {
             toast.success('User successfully created');
             login(
               {
-                username: values.username,
                 password: values.password as string,
+                username: values.username,
               },
               {
+                onError: (error: Error) => {
+                  toast.error(parseErrorMessage(error));
+                },
                 onSuccess: () => {
                   toast.success('Successfully logged in');
                   navigate({ to: '/dashboard' });
                 },
-                onError: (error: Error) => {
-                  toast.error(parseErrorMessage(error));
-                },
               },
             );
-          },
-          onError: (error: Error) => {
-            toast.error(parseErrorMessage(error));
           },
         },
       );
@@ -193,9 +188,9 @@ export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps
 
               <div
                 style={{
+                  alignItems: 'flex-start',
                   display: 'flex',
                   gap: appearanceConfig.lgGap,
-                  alignItems: 'flex-start',
                 }}
               >
                 <FormField id='income' label='Income' error={form.formState.errors.income?.message}>
@@ -239,10 +234,10 @@ export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps
             </div>
             <div
               style={{
-                display: 'flex',
-                marginTop: appearanceConfig.mdGap,
-                gap: appearanceConfig.mdGap,
                 alignItems: 'center',
+                display: 'flex',
+                gap: appearanceConfig.mdGap,
+                marginTop: appearanceConfig.mdGap,
               }}
             >
               <Button type='submit' disabled={isRegistering || isUpdating}>
@@ -264,4 +259,4 @@ export const AccountCard = ({ mode = 'create', defaultValues }: AccountCardProps
       </form>
     </Form>
   );
-};
+}

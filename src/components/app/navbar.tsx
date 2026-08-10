@@ -28,8 +28,8 @@ export function NavBar() {
               <SheetClose className='w-full'>
                 <div
                   style={{
-                    display: 'flex',
                     alignItems: 'center',
+                    display: 'flex',
                     gap: appearanceConfig.smGap,
                   }}
                 >

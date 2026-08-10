@@ -5,19 +5,19 @@ import { getLinkToken, getUserInfo, login, logout } from '@/lib/api/user';
 
 export const useUserInfo = () => {
   const query = useQuery({
-    queryKey: [queryKeys.user.info],
     queryFn: getUserInfo,
-    staleTime: apiConfig.staleTimes.user,
+    queryKey: [queryKeys.user.info],
     retry: 1,
+    staleTime: apiConfig.staleTimes.user,
   });
 
   return {
-    user: query.data,
-    isLoading: query.isLoading,
-    isError: query.isError,
     error: query.error,
+    isError: query.isError,
+    isLoading: query.isLoading,
     isSuccess: query.isSuccess,
     refetch: query.refetch,
+    user: query.data,
   };
 };
 
@@ -32,12 +32,12 @@ export const useLogin = () => {
   });
 
   return {
+    error: mutation.error,
+    isError: mutation.isError,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
     login: mutation.mutate,
     loginAsync: mutation.mutateAsync,
-    isLoading: mutation.isPending,
-    isError: mutation.isError,
-    error: mutation.error,
-    isSuccess: mutation.isSuccess,
     reset: mutation.reset,
   };
 };
@@ -55,11 +55,11 @@ export const useLogout = () => {
   });
 
   return {
+    error: mutation.error,
+    isError: mutation.isError,
+    isLoading: mutation.isPending,
     logout: mutation.mutate,
     logoutAsync: mutation.mutateAsync,
-    isLoading: mutation.isPending,
-    isError: mutation.isError,
-    error: mutation.error,
   };
 };
 
@@ -68,15 +68,15 @@ export const useLinkToken = (enabled = true) => {
     queryKey: [queryKeys.user.linkToken],
     queryFn: getLinkToken,
     enabled,
-    // staleTime: 5 * 60 * 1000, // 5 minutes
+    // StaleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   return {
+    error: query.error,
+    isError: query.isError,
+    isLoading: query.isLoading,
     linkToken: query.data?.linkToken,
     linkTokenData: query.data,
-    isLoading: query.isLoading,
-    isError: query.isError,
-    error: query.error,
     refetch: query.refetch,
   };
 };
